@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- common_loading_view -->
+    <dimen name="loading_view_width">25dp</dimen>
+    <dimen name="loading_view_height">25dp</dimen>
+    <dimen name="loading_view_text_size">18sp</dimen>
+
+    <!-- school_list.xml -->
+    <dimen name="school_list_select_text_size">18sp</dimen>
+    <dimen name="school_list_select_text_padding">10dp</dimen>
+    <dimen name="school_list_select_item_text_size">18sp</dimen>
+
+    <dimen name="main_sliding_menu_shadow_width">15dp</dimen>
+    <dimen name="main_sliding_menu_behind_offset">60dp</dimen>
+
+    <!-- school_welcome.xml -->
+    <dimen name="school_welcome_text_size">20sp</dimen>
+</resources>

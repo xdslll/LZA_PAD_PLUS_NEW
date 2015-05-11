@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">移动图书馆</string>
+
+    <!-- dialog -->
+    <string name="dialog_prompt_title">提示</string>
+    <string name="dialog_button_login">登录</string>
+    <string name="dialog_button_retry">重试</string>
+    <string name="dialog_button_confirm">确认</string>
+    <string name="dialog_button_cancel">取消</string>
+    <string name="dialog_button_exit">退出</string>
+    <string name="dialog_confirm_title">请确认</string>
+    <string name="dialog_confirm_quit">是否确认退出？</string>
+    <string name="dialog_confirm_none_school">未选择学校，请重新选择</string>
+    <string name="dialog_loading_failed">加载失败，点击确认后重试</string>
+    <string name="dialog_confirm_select_school">是否确认重新选择学校？</string>
+
+    <!-- title -->
+    <string name="title_login">登录</string>
+    <string name="title_main_with_school_name">%s移动图书馆</string>
+    <string name="title_main">移动图书馆</string>
+
+    <!-- menu -->
+    <string name="menu_skip_login">跳过登录</string>
+    <string name="menu_select_school">选择学校</string>
+
+    <!-- school_list.xml -->
+    <string name="school_list_select_school">请选择所在院校</string>
+    <string name="school_list_request_failed_title">请求失败</string>
+    <string name="school_list_request_failed_message">学校列表获取失败，请检查网络后重试</string>
+
+
+</resources>

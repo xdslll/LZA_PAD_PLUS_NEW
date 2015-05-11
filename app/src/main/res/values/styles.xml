@@ -1,0 +1,9 @@
+<resources>
+    <style name="Lza.Default.Theme" parent="@style/Theme.Sherlock.Light">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="Lza.Main.Theme" parent="@style/Lza.Default.Theme">
+        <item name="android:windowNoTitle">false</item>
+    </style>
+</resources>
