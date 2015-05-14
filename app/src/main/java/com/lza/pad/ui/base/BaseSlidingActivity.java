@@ -23,6 +23,7 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.lza.pad.R;
 import com.lza.pad.helper.Consts;
+import com.lza.pad.helper.ImageHelper;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
@@ -246,7 +247,8 @@ public abstract class BaseSlidingActivity extends SlidingFragmentActivity implem
         }
     }
 
-    protected void setText(int id, String text) {
-        ((TextView) findViewById(id)).setText(text);
+    protected ImageHelper getImageHelper() {
+        return ImageHelper.getInstance(mCtx);
     }
+
 }

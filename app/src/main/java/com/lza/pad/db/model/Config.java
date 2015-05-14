@@ -12,7 +12,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * @author xiads
  * @Date 5/11/15.
  */
-@DatabaseTable
+@DatabaseTable(tableName = "config")
 public class Config implements Parcelable {
 
     @DatabaseField(id = true)

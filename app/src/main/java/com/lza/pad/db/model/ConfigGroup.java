@@ -12,7 +12,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * @author xiads
  * @Date 5/11/15.
  */
-@DatabaseTable
+@DatabaseTable(tableName = "config_group")
 public class ConfigGroup implements Parcelable {
 
     @DatabaseField(id = true)
@@ -26,9 +26,6 @@ public class ConfigGroup implements Parcelable {
 
     @DatabaseField
     String value;
-
-    @DatabaseField(canBeNull = false, foreign = true)
-    Config config_id;
 
     public String getId() {
         return id;
@@ -62,12 +59,7 @@ public class ConfigGroup implements Parcelable {
         this.value = value;
     }
 
-    public Config getConfig_id() {
-        return config_id;
-    }
-
-    public void setConfig_id(Config config_id) {
-        this.config_id = config_id;
+    public ConfigGroup() {
     }
 
     @Override
@@ -81,10 +73,6 @@ public class ConfigGroup implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.description);
         dest.writeString(this.value);
-        dest.writeParcelable(this.config_id, 0);
-    }
-
-    public ConfigGroup() {
     }
 
     private ConfigGroup(Parcel in) {
@@ -92,10 +80,9 @@ public class ConfigGroup implements Parcelable {
         this.name = in.readString();
         this.description = in.readString();
         this.value = in.readString();
-        this.config_id = in.readParcelable(Config.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<ConfigGroup> CREATOR = new Parcelable.Creator<ConfigGroup>() {
+    public static final Creator<ConfigGroup> CREATOR = new Creator<ConfigGroup>() {
         public ConfigGroup createFromParcel(Parcel source) {
             return new ConfigGroup(source);
         }
@@ -104,4 +91,14 @@ public class ConfigGroup implements Parcelable {
             return new ConfigGroup[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "ConfigGroup{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }

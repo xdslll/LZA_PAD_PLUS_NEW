@@ -331,7 +331,7 @@ public class Utility {
         return new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("确定", okListener)
+                .setPositiveButton("确认", okListener)
                 .setNegativeButton("取消", cancelListener)
                 .create();
     }
@@ -340,7 +340,7 @@ public class Utility {
         return new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("确定", okListener)
+                .setPositiveButton("确认", okListener)
                 .create();
     }
 
@@ -348,7 +348,7 @@ public class Utility {
         return new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("确定", okListener)
+                .setPositiveButton("确认", okListener)
                 .setNegativeButton("取消", cancelListener)
                 .create();
     }
@@ -357,7 +357,7 @@ public class Utility {
         return new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("确定", okListener)
+                .setPositiveButton("确认", okListener)
                 .create();
     }
 

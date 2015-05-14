@@ -11,16 +11,16 @@
         android:icon="@mipmap/ic_launcher" android:theme="@style/Lza.Default.Theme"
         android:name=".helper.MainApp">
         <activity android:name=".ui.main.SchoolListActivity" android:screenOrientation="portrait"
-            android:launchMode="singleTask">
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity android:name=".ui.main.LoginActivity" android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTop"/>
         <activity android:name=".ui.main.MainActivity" android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTop" android:uiOptions="splitActionBarWhenNarrow"/>
         <meta-data android:value="5549d16367e58ee1d3000894" android:name="UMENG_APPKEY"/>
         <meta-data android:value="Channel ID" android:name="UMENG_CHANNEL"/>
     </application>

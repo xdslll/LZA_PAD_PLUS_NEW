@@ -1,6 +1,75 @@
 #
-# generated on 2015/05/09 03:27:58
+# generated on 2015/05/14 09:52:40
 #
+# --table-start--
+dataClass=com.lza.pad.db.model.Config
+tableName=config
+# --table-fields-start--
+# --field-start--
+fieldName=id
+id=true
+# --field-end--
+# --field-start--
+fieldName=key
+# --field-end--
+# --field-start--
+fieldName=value
+# --field-end--
+# --field-start--
+fieldName=description
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.lza.pad.db.model.ConfigGroup
+tableName=config_group
+# --table-fields-start--
+# --field-start--
+fieldName=id
+id=true
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --field-start--
+fieldName=description
+# --field-end--
+# --field-start--
+fieldName=value
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.lza.pad.db.model.Module
+tableName=module
+# --table-fields-start--
+# --field-start--
+fieldName=id
+id=true
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --field-start--
+fieldName=ico
+# --field-end--
+# --field-start--
+fieldName=ico2
+# --field-end--
+# --field-start--
+fieldName=type
+# --field-end--
+# --field-start--
+fieldName=parse_path
+# --field-end--
+# --field-start--
+fieldName=url
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
 # --table-start--
 dataClass=com.lza.pad.db.model.User
 tableName=user
@@ -20,6 +89,39 @@ fieldName=session
 # --field-end--
 # --field-start--
 fieldName=school_bh
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.lza.pad.db.model.VersionModule
+tableName=version_module
+# --table-fields-start--
+# --field-start--
+fieldName=id
+id=true
+# --field-end--
+# --field-start--
+fieldName=module
+columnName=mod_id
+canBeNull=false
+foreign=true
+foreignAutoRefresh=true
+# --field-end--
+# --field-start--
+fieldName=config_group
+columnName=cfg_group_id
+foreign=true
+foreignAutoRefresh=true
+# --field-end--
+# --field-start--
+fieldName=label
+# --field-end--
+# --field-start--
+fieldName=type
+# --field-end--
+# --field-start--
+fieldName=index
 # --field-end--
 # --table-fields-end--
 # --table-end--

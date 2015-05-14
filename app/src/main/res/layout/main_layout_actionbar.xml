@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content" android:gravity="center_vertical"
+    android:paddingTop="10dp" android:paddingBottom="10dp">
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:scaleType="fitXY"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/abc_ic_ab_back_holo_light"
+        android:background="@drawable/common_bg"
+        android:id="@+id/actionbar_arrow_img"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="当前登录状态：未登录"
+        android:id="@+id/actionbar_login_status"
+        />
+</LinearLayout>

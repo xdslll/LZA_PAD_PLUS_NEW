@@ -27,4 +27,5 @@ dependencies {
     compile files('libs/base-adapter-helper-1.1.10.jar')
     compile project(':lza_library')
     compile project(':slidingMenuLibrary')
+    compile files('libs/universal-image-loader-1.9.3.jar')
 }

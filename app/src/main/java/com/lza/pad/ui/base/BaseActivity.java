@@ -23,6 +23,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.lza.pad.R;
 import com.lza.pad.helper.Consts;
+import com.lza.pad.helper.ImageHelper;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
@@ -244,5 +245,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity implements C
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    protected ImageHelper getImageHelper() {
+        return ImageHelper.getInstance(mCtx);
     }
 }

@@ -3,6 +3,7 @@ package com.lza.pad.helper;
 import android.text.TextUtils;
 
 import com.lza.pad.db.model.Version;
+import com.lza.pad.db.model.VersionModule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,10 +31,37 @@ public class UrlHelper implements UrlParams {
         return generateUrl(par);
     }
 
-    public static String getVersionModule(Version version) {
+    public static String getAllVersionModule(Version version) {
+        Map<String, String> par = new HashMap<String, String>();
+        par.put(PAR_CONTROL, CONTROL_GET_ALL_VERSION_MODULE);
+        par.put(PAR_VERSION_ID, version.getId());
+        return generateUrl(par);
+    }
+
+    public static String getVersionModule(Version version, String moduleType) {
         Map<String, String> par = new HashMap<String, String>();
         par.put(PAR_CONTROL, CONTROL_GET_VERSION_MODULE);
         par.put(PAR_VERSION_ID, version.getId());
+        par.put(PAR_TYPE, moduleType);
+        return generateUrl(par);
+    }
+
+    public static String getNormalVersionModule(Version version) {
+        return getVersionModule(version, VersionModule.MODULE_TYPE_NORMAL);
+    }
+
+    public static String getLoginVersionModule(Version version) {
+        return getVersionModule(version, VersionModule.MODULE_TYPE_LOGIN);
+    }
+
+    public static String getMylibVersionModule(Version version) {
+        return getVersionModule(version, VersionModule.MODULE_TYPE_MYLIB);
+    }
+
+    public static String getSchoolVersionByBh(String schoolBh) {
+        Map<String, String> par = new HashMap<String, String>();
+        par.put(PAR_CONTROL, CONTROL_GET_SCHOOL_VERSION_BY_BH);
+        par.put(PAR_SCHOOL_BH, schoolBh);
         return generateUrl(par);
     }
 

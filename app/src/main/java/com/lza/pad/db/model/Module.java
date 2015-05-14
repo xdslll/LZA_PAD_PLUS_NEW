@@ -12,7 +12,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * @author xiads
  * @Date 5/11/15.
  */
-@DatabaseTable
+@DatabaseTable(tableName = "module")
 public class Module implements Parcelable {
 
     @DatabaseField(id = true)
@@ -23,6 +23,9 @@ public class Module implements Parcelable {
 
     @DatabaseField
     String ico;
+
+    @DatabaseField
+    String ico2;
 
     @DatabaseField
     String type;
@@ -81,6 +84,17 @@ public class Module implements Parcelable {
         this.url = url;
     }
 
+    public String getIco2() {
+        return ico2;
+    }
+
+    public void setIco2(String ico2) {
+        this.ico2 = ico2;
+    }
+
+    public Module() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -91,24 +105,23 @@ public class Module implements Parcelable {
         dest.writeString(this.id);
         dest.writeString(this.name);
         dest.writeString(this.ico);
+        dest.writeString(this.ico2);
         dest.writeString(this.type);
         dest.writeString(this.parse_path);
         dest.writeString(this.url);
-    }
-
-    public Module() {
     }
 
     private Module(Parcel in) {
         this.id = in.readString();
         this.name = in.readString();
         this.ico = in.readString();
+        this.ico2 = in.readString();
         this.type = in.readString();
         this.parse_path = in.readString();
         this.url = in.readString();
     }
 
-    public static final Parcelable.Creator<Module> CREATOR = new Parcelable.Creator<Module>() {
+    public static final Creator<Module> CREATOR = new Creator<Module>() {
         public Module createFromParcel(Parcel source) {
             return new Module(source);
         }
@@ -117,4 +130,17 @@ public class Module implements Parcelable {
             return new Module[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "Module{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", ico='" + ico + '\'' +
+                ", ico2='" + ico2 + '\'' +
+                ", type='" + type + '\'' +
+                ", parse_path='" + parse_path + '\'' +
+                ", url='" + url + '\'' +
+                '}';
+    }
 }

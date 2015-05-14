@@ -2,9 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.0"
+        android:id="@+id/main_layout_viewpager">
+    </android.support.v4.view.ViewPager>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/main_layout_hello"
-        />
+        android:orientation="horizontal"
+        android:background="@color/lightgray"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/main_layout_login_status_text_size"
+            android:padding="@dimen/main_layout_login_status_padding"
+            android:id="@+id/main_layout_login_status"
+            />
+    </LinearLayout>
 </LinearLayout>

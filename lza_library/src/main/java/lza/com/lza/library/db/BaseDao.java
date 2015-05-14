@@ -38,6 +38,15 @@ public abstract class BaseDao<T, ID> {
         return mDao;
     }
 
+    public boolean isExists(ID id) {
+        try {
+            return mDao.idExists(id);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
     public int create(T data) {
         try {
             return mDao.create(data);
@@ -163,7 +172,7 @@ public abstract class BaseDao<T, ID> {
         return null;
     }
 
-    public List<T> queryForCondition(PreparedQuery<T> condition) {
+    protected List<T> queryForCondition(PreparedQuery<T> condition) {
         if (condition != null) {
             AppLogger.e(condition.toString());
             try {
@@ -175,7 +184,7 @@ public abstract class BaseDao<T, ID> {
         return null;
     }
 
-    public List<T> queryForCondition() {
+    protected List<T> queryForCondition() {
         try {
             if (mQuery == null) {
                 createQueryBuilder();

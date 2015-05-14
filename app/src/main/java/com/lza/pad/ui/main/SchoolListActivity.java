@@ -183,6 +183,7 @@ public class SchoolListActivity extends BaseActivity {
                     if (!SchoolListActivity.this.isEmpty(schoolVersion.getSchool_bh())) {
                         School school = schoolVersion.getSchool_bh().get(0);
                         baseAdapterHelper.setText(R.id.school_list_item_text, school.getTitle());
+
                     } else {
                         baseAdapterHelper.setText(R.id.school_list_item_text, "");
                     }

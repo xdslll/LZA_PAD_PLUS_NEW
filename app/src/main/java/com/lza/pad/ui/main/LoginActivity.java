@@ -25,10 +25,32 @@ import com.lza.pad.db.model.Version;
 import com.lza.pad.helper.Settings;
 import com.lza.pad.ui.base.BaseActivity;
 
+import java.lang.ref.WeakReference;
+
+import lza.com.lza.library.util.ToastUtils;
 import lza.com.lza.library.util.Utility;
 
 /**
- * Say something about this class
+ * 前置条件：
+ * KEY_IF_SKIP_LOGIN - 是否跳过登录（从配置文件中读取，默认为false）
+ *
+ * 输入：
+ *  需要传入以下三类参数的一类：
+ *  第一类：
+ *      KEY_USER - 已登录用户
+ *  第二类：
+ *      KEY_SCHOOL_VERSION - 学校版本信息
+ *  第三类：
+ *      KEY_SCHOOL_BH - 学校编号
+ *      KEY_SCHOOL_NAME - 学校名称，可选
+ *  如果参数不为以上三类中的任何一类，系统将从SharedPreferences里读取学校编号
+ *
+ *  此外还需要传入用途
+ *      KEY_LOGIN_USAGE - 页面的用途，默认为0，表示成功后跳转到主页面，如果为1则表示登录成功后关闭当前页面
+ *
+ * 输出：
+ *  1、跳转到主页面
+ *  2、关闭本页面，返回OK
  *
  * @author xiads
  * @Date 5/7/15.
@@ -42,6 +64,7 @@ public class LoginActivity extends BaseActivity {
     Version mVersion;
 
     String mSchoolBh, mSchoolName;
+    int mLoginUsage;
 
     WebView mWebView;
     WebSettings mWebSettings;
@@ -54,12 +77,19 @@ public class LoginActivity extends BaseActivity {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        mLoginUsage = getIntent().getIntExtra(KEY_LOGIN_USAGE, DEFAULT_LOGIN);
         mUser = getIntent().getParcelableExtra(KEY_USER);
         if (mUser == null) {
             mSchoolVersion = getIntent().getParcelableExtra(KEY_SCHOOL_VERSION);
             if (mSchoolVersion == null) {
                 mSchoolBh = getIntent().getStringExtra(KEY_SCHOOL_BH);
                 mSchoolName = getIntent().getStringExtra(KEY_SCHOOL_NAME);
+                if (isEmpty(mSchoolBh)) {
+                    mSchoolBh = Settings.getSchoolBh(mCtx);
+                }
+                if (isEmpty(mSchoolName)) {
+                    mSchoolName = Settings.getSchoolName(mCtx);
+                }
             } else {
                 mSchool = pickFirst(mSchoolVersion.getSchool_bh());
                 mVersion = pickFirst(mSchoolVersion.getVersion_code());
@@ -92,21 +122,23 @@ public class LoginActivity extends BaseActivity {
         mWebView.setWebViewClient(new LoginWebViewClient());
         mWebView.setWebChromeClient(new LoginWebChromeClient());
 
-        mWebView.addJavascriptInterface(new InJavaScript(), "injs");
+        mWebView.addJavascriptInterface(new InJavaScript(this), "injs");
         mWebView.loadUrl(url);
     }
 
+    //private static final String URL_PREX = "192.168.31.130";
+    private static final String URL_PREX = "192.168.1.114";
     private String createUrl() {
         //String url = "http://www.d1bu.me/mobile/login?school_bh=" + mSchool.getBh();
         String url = "";
         if (mUser != null) {
-            url = "http://192.168.1.114:8080/mobile/login?school_bh=" + mUser.getSchool_bh() + "&username=" + mUser.getUsername() + "&password=" + mUser.getPassword();
+            url = "http://" + URL_PREX + ":8080/mobile/login?school_bh=" + mUser.getSchool_bh() + "&username=" + mUser.getUsername() + "&password=" + mUser.getPassword();
         } else if (mSchool != null) {
-            url = "http://192.168.1.114:8080/mobile/login?school_bh=" + mSchool.getBh();
+            url = "http://" + URL_PREX + ":8080/mobile/login?school_bh=" + mSchool.getBh();
         } else if (!isEmpty(mSchoolBh)) {
-            url = "http://192.168.1.114:8080/mobile/login?school_bh=" + mSchoolBh;
+            url = "http://" + URL_PREX + ":8080/mobile/login?school_bh=" + mSchoolBh;
         }
-        log("url=" + url);
+        //String url = "http://192.168.1.114:8080/mobile/test";
         return url;
     }
 
@@ -121,11 +153,17 @@ public class LoginActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    public final class InJavaScript {
+    public static final class InJavaScript {
+
+        WeakReference<LoginActivity> mActivity;
+
+        public InJavaScript(LoginActivity activity) {
+            this.mActivity = new WeakReference<LoginActivity>(activity);
+        }
 
         @JavascriptInterface
         public void login(final String username, final String password, final String sessionValue, final String schoolBh) {
-            getMainHandler().post(new Runnable() {
+            mActivity.get().getMainHandler().post(new Runnable() {
                 @Override
                 public void run() {
                     jump(username, password, sessionValue, schoolBh);
@@ -135,49 +173,63 @@ public class LoginActivity extends BaseActivity {
 
         @JavascriptInterface
         public void skip() {
-            skipLogin();
+            mActivity.get().skipLogin();
         }
 
         public void jump(final String username, final String password, final String sessionValue, final String schoolBh) {
+            LoginActivity activity = mActivity.get();
             User user = new User();
             user.setUsername(username);
             user.setPassword(password);
             user.setSession(sessionValue);
             user.setSchool_bh(schoolBh);
-            UserDao userDao = new UserDao(mCtx);
+            UserDao userDao = new UserDao(activity);
             Dao.CreateOrUpdateStatus status = userDao.createOrUpdate(user);
             if (status != null) {
                 if (status.isCreated()) {
-                    log("User新增成功");
+                    activity.log("User新增成功");
+                    ToastUtils.showShort(activity, R.string.login_success);
                 } else if (status.isUpdated()) {
-                    log("User更新成功");
+                    activity.log("User更新成功");
+                    ToastUtils.showShort(activity, R.string.login_success);
                 } else {
-                    log("User新增或更新失败");
+                    activity.log("User新增或更新失败");
                 }
             }
-            Intent intent = new Intent(mCtx, MainActivity.class);
-            intent.putExtra(KEY_USER, user);
-            if (mSchoolVersion != null) {
-                intent.putExtra(KEY_SCHOOL_VERSION, mSchoolVersion);
+            if (activity.mLoginUsage == DEFAULT_LOGIN) {
+                Intent intent = new Intent(mActivity.get(), MainActivity.class);
+                intent.putExtra(KEY_USER, user);
+                if (activity.mSchoolVersion != null) {
+                    intent.putExtra(KEY_SCHOOL_VERSION, activity.mSchoolVersion);
+                }
+                activity.startActivity(intent);
+                activity.finish();
+            } else {
+                Intent data = new Intent();
+                data.putExtra(KEY_USER, user);
+                if (activity.mSchoolVersion != null) {
+                    data.putExtra(KEY_SCHOOL_VERSION, activity.mSchoolVersion);
+                }
+                activity.setResult(RESULT_OK, data);
+                activity.finish();
             }
-            startActivity(intent);
-            finish();
         }
 
         @JavascriptInterface
         public void hideClearMenu() {
-            mClearMenuVisibility = false;
-            invalidateOptionsMenu();
+            mActivity.get().mClearMenuVisibility = false;
+            mActivity.get().invalidateOptionsMenu();
         }
 
         @JavascriptInterface
         public void showClearMenu() {
-            mClearMenuVisibility = true;
-            invalidateOptionsMenu();
+            mActivity.get().mClearMenuVisibility = true;
+            mActivity.get().invalidateOptionsMenu();
         }
     }
 
     private class LoginWebViewClient extends WebViewClient {
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
@@ -211,13 +263,17 @@ public class LoginActivity extends BaseActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(mCtx, SchoolListActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        overridePendingTransition(0, 0);
-                        finish();
+                        if (mLoginUsage == DEFAULT_LOGIN) {
+                            Intent intent = new Intent(mCtx, SchoolListActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            overridePendingTransition(0, 0);
+                            finish();
 
-                        overridePendingTransition(0, 0);
-                        startActivity(intent);
+                            overridePendingTransition(0, 0);
+                            startActivity(intent);
+                        } else {
+                            finish();
+                        }
                     }
                 });
     }
@@ -258,25 +314,29 @@ public class LoginActivity extends BaseActivity {
 
     private void skipLogin() {
         Settings.setIfSkipLogin(mCtx, true);
-        Intent intent = new Intent(mCtx, MainActivity.class);
-        if (mSchoolVersion != null) {
-            intent.putExtra(KEY_SCHOOL_VERSION, mSchoolVersion);
-        }
-        if (mUser != null) {
-            intent.putExtra(KEY_USER, mUser);
-        }
-        if (!isEmpty(mSchoolBh)) {
-            intent.putExtra(KEY_SCHOOL_BH, mSchoolBh);
-        }
-        if (!isEmpty(mSchoolName)) {
-            intent.putExtra(KEY_SCHOOL_NAME, mSchoolName);
+        if (mLoginUsage == DEFAULT_LOGIN) {
+            Intent intent = new Intent(mCtx, MainActivity.class);
+            if (mSchoolVersion != null) {
+                intent.putExtra(KEY_SCHOOL_VERSION, mSchoolVersion);
+            }
+            if (mUser != null) {
+                intent.putExtra(KEY_USER, mUser);
+            }
+            if (!isEmpty(mSchoolBh)) {
+                intent.putExtra(KEY_SCHOOL_BH, mSchoolBh);
+            }
+            if (!isEmpty(mSchoolName)) {
+                intent.putExtra(KEY_SCHOOL_NAME, mSchoolName);
+            }
+            startActivity(intent);
+        } else {
+            setResult(RESULT_OK);
         }
         finish();
-
-        startActivity(intent);
     }
 
     private boolean checkIfSkipLogin() {
         return Settings.getIfSkipLogin(mCtx);
     }
+
 }

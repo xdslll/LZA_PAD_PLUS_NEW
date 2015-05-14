@@ -12,7 +12,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * @author xiads
  * @Date 5/8/15.
  */
-@DatabaseTable
+@DatabaseTable(tableName = "user")
 public class User implements Parcelable {
 
     @DatabaseField(id = true)

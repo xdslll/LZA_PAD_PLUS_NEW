@@ -18,6 +18,8 @@ public class SchoolVersion implements Parcelable {
 
     List<Version> version_code = new ArrayList<Version>();
 
+    String url;
+
     public List<School> getSchool_bh() {
         return school_bh;
     }
@@ -34,6 +36,17 @@ public class SchoolVersion implements Parcelable {
         this.version_code = version_code;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public SchoolVersion() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -43,17 +56,16 @@ public class SchoolVersion implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeTypedList(school_bh);
         dest.writeTypedList(version_code);
-    }
-
-    public SchoolVersion() {
+        dest.writeString(this.url);
     }
 
     private SchoolVersion(Parcel in) {
         in.readTypedList(school_bh, School.CREATOR);
         in.readTypedList(version_code, Version.CREATOR);
+        this.url = in.readString();
     }
 
-    public static final Parcelable.Creator<SchoolVersion> CREATOR = new Parcelable.Creator<SchoolVersion>() {
+    public static final Creator<SchoolVersion> CREATOR = new Creator<SchoolVersion>() {
         public SchoolVersion createFromParcel(Parcel source) {
             return new SchoolVersion(source);
         }

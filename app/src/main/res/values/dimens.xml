@@ -15,4 +15,13 @@
 
     <!-- school_welcome.xml -->
     <dimen name="school_welcome_text_size">20sp</dimen>
+
+    <!-- main_layout.xml -->
+    <dimen name="main_layout_login_status_text_size">16sp</dimen>
+    <dimen name="main_layout_login_status_padding">10dp</dimen>
+    <dimen name="main_layout_select_module_padding">10dp</dimen>
+    <dimen name="main_layout_select_module_text_size">14sp</dimen>
+    <dimen name="main_layout_module_img_width">60dp</dimen>
+    <dimen name="main_layout_menu_img_width">60dp</dimen>
+    <dimen name="main_layout_menu_text_size">18sp</dimen>
 </resources>

@@ -90,6 +90,7 @@
     <orderEntry type="library" exported="" name="umeng-analytics-v5.4.2" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="base-adapter-helper-1.1.10" level="project" />
+    <orderEntry type="library" exported="" name="universal-image-loader-1.9.3" level="project" />
     <orderEntry type="module" module-name="slidingMenuLibrary" exported="" />
     <orderEntry type="module" module-name="lza_library" exported="" />
     <orderEntry type="module" module-name="pullToRefreshLibrary" exported="" />

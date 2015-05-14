@@ -10,9 +10,18 @@ import com.lza.pad.db.model.Module;
  * @author xiads
  * @Date 5/9/15.
  */
-public class ModuleDao extends LzaDao<Module, Integer> {
+public class ModuleDao extends LzaDao<Module, String> {
 
-    public ModuleDao(Context context) {
+    private static ModuleDao mInstance = null;
+
+    public static ModuleDao getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new ModuleDao(context);
+        }
+        return mInstance;
+    }
+
+    private ModuleDao(Context context) {
         super(context, Module.class);
     }
 

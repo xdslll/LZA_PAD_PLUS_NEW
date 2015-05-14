@@ -2,6 +2,7 @@ package lza.com.lza.library.db;
 
 import android.content.Context;
 
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -85,5 +86,8 @@ public class DatabaseTools {
         return true;
     }
 
+    public static boolean isCreateOrUpdateSuccess(Dao.CreateOrUpdateStatus status) {
+        return status.isCreated() || (status.isUpdated() && status.getNumLinesChanged() > 0);
+    }
 
 }

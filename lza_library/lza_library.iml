@@ -91,6 +91,8 @@
     <orderEntry type="library" exported="" name="ormlite-core-4.48" level="project" />
     <orderEntry type="library" exported="" name="google_zxing" level="project" />
     <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="android-async-http-1.4.5" level="project" />
+    <orderEntry type="module" module-name="actionbarsherlock" exported="" />
   </component>
 </module>

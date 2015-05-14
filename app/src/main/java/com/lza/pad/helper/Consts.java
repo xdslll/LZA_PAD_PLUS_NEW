@@ -16,6 +16,10 @@ public interface Consts {
         public static final String KEY_SCHOOL_NAME = "school_name";
 
         public static final String KEY_IF_SKIP_LOGIN = "key_if_skip_login";
+        public static final String KEY_LOGIN_USAGE = "key_login_usage";
+
+        public static final int DEFAULT_LOGIN = 0;
+        public static final int CUSTOM_LOGIN = 1;
     }
 
 }
