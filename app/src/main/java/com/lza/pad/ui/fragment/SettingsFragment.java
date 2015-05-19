@@ -20,6 +20,12 @@ public class SettingsFragment extends BaseUserFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         TextView text = new TextView(mActivity);
         text.setText("设置");
+        text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         return text;
     }
 }
