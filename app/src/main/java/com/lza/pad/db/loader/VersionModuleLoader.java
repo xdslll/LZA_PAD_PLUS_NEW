@@ -17,14 +17,12 @@ import lza.com.lza.library.db.AbstractLoader;
  */
 public class VersionModuleLoader extends AbstractLoader<List<VersionModule>> {
 
-    String mType;
     public VersionModuleLoader(Context context, String type) {
         super(context);
-        mType = type;
     }
 
     @Override
     public List<VersionModule> loadInBackground() {
-        return VersionModuleDao.getInstance(mContext).queryByType(mType);
+        return VersionModuleDao.getInstance(mContext).queryForAll();
     }
 }

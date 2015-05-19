@@ -64,6 +64,14 @@ public class HttpUtility {
         mHttpClient.get(url, params, responseHandler);
     }
 
+    public void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        mHttpClient.post(url, params, responseHandler);
+    }
+
+    public void post(UrlRequest request, AsyncHttpResponseHandler responseHandler) {
+        mHttpClient.post(request.getUrl(), request.getRequestParams(), responseHandler);
+    }
+
     public void sendByProxy(String url, String proxyHostName, int proxyPort,
                             String proxyUsername, String proxyPassword, AsyncHttpResponseHandler responseHandler) {
         mHttpClient.setProxy(proxyHostName, proxyPort, proxyUsername, proxyPassword);

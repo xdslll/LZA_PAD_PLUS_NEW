@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.lza.pad.R;
 import com.lza.pad.helper.Consts;
 import com.lza.pad.helper.ImageHelper;
@@ -31,6 +32,7 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 import lza.com.lza.library.http.HttpUtility;
+import lza.com.lza.library.http.UrlRequest;
 import lza.com.lza.library.util.AppLogger;
 import lza.com.lza.library.util.Utility;
 
@@ -85,6 +87,16 @@ public abstract class BaseSlidingActivity extends SlidingFragmentActivity implem
     protected void send(String url, AsyncHttpResponseHandler handler) {
         HttpUtility httpUtility = new HttpUtility(mCtx, HttpUtility.ASYNC_HTTP_CLIENT);
         httpUtility.send(url, handler);
+    }
+
+    protected void post(String url, RequestParams params, AsyncHttpResponseHandler handler) {
+        HttpUtility httpUtility = new HttpUtility(mCtx, HttpUtility.ASYNC_HTTP_CLIENT);
+        httpUtility.post(url, params, handler);
+    }
+
+    protected void post(UrlRequest request, AsyncHttpResponseHandler handler) {
+        HttpUtility httpUtility = new HttpUtility(mCtx, HttpUtility.ASYNC_HTTP_CLIENT);
+        httpUtility.post(request, handler);
     }
 
     protected String wrap(String value, String defaultValue) {

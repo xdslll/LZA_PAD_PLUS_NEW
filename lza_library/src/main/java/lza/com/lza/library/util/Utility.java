@@ -639,4 +639,8 @@ public class Utility {
             e.printStackTrace();
         }
     }
+
+    public static <T> boolean isEmpty(List<T> data) {
+        return data == null || data.size() <= 0;
+    }
 }

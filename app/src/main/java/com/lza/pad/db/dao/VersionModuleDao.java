@@ -2,10 +2,8 @@ package com.lza.pad.db.dao;
 
 import android.content.Context;
 
+import com.lza.pad.db.model.Module;
 import com.lza.pad.db.model.VersionModule;
-
-import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Say something about this class
@@ -28,7 +26,7 @@ public class VersionModuleDao extends LzaDao<VersionModule, String> {
         super(context, VersionModule.class);
     }
 
-    public List<VersionModule> queryByType(String type) {
+    /*public List<VersionModule> queryByType(String type) {
         createQueryAndWhere();
         try {
             mWhere.eq(VersionModule.COLUMN_TYPE, type);
@@ -37,6 +35,10 @@ public class VersionModuleDao extends LzaDao<VersionModule, String> {
             e.printStackTrace();
             return null;
         }
+    }*/
+
+    public int deleteByModule(Module module) {
+        return deleteByColumnValue(VersionModule.COLUMN_MODULE, module);
     }
 
     @Override

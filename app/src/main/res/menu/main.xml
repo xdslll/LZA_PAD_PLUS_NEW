@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:showAsAction="ifRoom" android:id="@+id/main_add_module"
-        android:title="@string/menu_add_module" android:visible="true"/>
+        android:title="@string/menu_add_module" android:visible="true" android:icon="@drawable/ic_add"/>
     <item android:showAsAction="ifRoom" android:id="@+id/main_select_school"
-        android:title="@string/menu_select_school" android:visible="true"/>
+        android:title="@string/menu_select_school" android:visible="true" android:icon="@drawable/ic_revert_normal"/>
     <item android:showAsAction="ifRoom" android:id="@+id/main_login"
-        android:title="@string/menu_login" android:visible="true"/>
+        android:title="@string/menu_login" android:visible="true" android:icon="@drawable/icn_events_rsvp_invite_more"/>
     <item android:showAsAction="ifRoom" android:id="@+id/main_quit"
-        android:title="@string/menu_quit" android:visible="true"/>
+        android:title="@string/menu_quit" android:visible="true" android:icon="@drawable/ic_exit_to_app_grey_16"/>
 </menu>

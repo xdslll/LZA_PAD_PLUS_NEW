@@ -18,13 +18,9 @@ import java.util.List;
 @DatabaseTable(tableName = "version_module")
 public class VersionModule implements Parcelable {
 
-    public static final String MODULE_TYPE_NORMAL = "0";
+    public static final String MODULE_TYPE_LOGIN = "LOGIN";
 
-    public static final String MODULE_TYPE_LOGIN = "1";
-
-    public static final String MODULE_TYPE_MYLIB = "2";
-
-    public static final String COLUMN_TYPE = "type";
+    public static final String COLUMN_MODULE = "module_id";
 
     @DatabaseField(id = true)
     String id;
@@ -35,20 +31,25 @@ public class VersionModule implements Parcelable {
 
     List<ConfigGroup> config_group_id = new ArrayList<ConfigGroup>();
 
-    @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true, columnName = "mod_id")
+    List<ModuleType> type = new ArrayList<ModuleType>();
+
+    @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true, columnName = "module_id")
     Module module;
 
-    @DatabaseField(canBeNull = true, foreign = true, foreignAutoRefresh = true, columnName = "cfg_group_id")
+    @DatabaseField(canBeNull = true, foreign = true, foreignAutoRefresh = true, columnName = "config_group_id")
     ConfigGroup config_group;
+
+    @DatabaseField(canBeNull = true, foreign = true, foreignAutoRefresh = true, columnName = "module_type_id")
+    ModuleType module_type;
 
     @DatabaseField
     String label;
 
     @DatabaseField
-    String type;
+    String index;
 
     @DatabaseField
-    String index;
+    String need_login;
 
     public String getId() {
         return id;
@@ -106,12 +107,8 @@ public class VersionModule implements Parcelable {
         this.config_group = config_group;
     }
 
-    public String getType() {
+    public List<ModuleType> getType() {
         return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getIndex() {
@@ -122,7 +119,44 @@ public class VersionModule implements Parcelable {
         this.index = index;
     }
 
+    public void setType(List<ModuleType> type) {
+        this.type = type;
+    }
+
+    public ModuleType getModule_type() {
+        return module_type;
+    }
+
+    public void setModule_type(ModuleType module_type) {
+        this.module_type = module_type;
+    }
+
+    public String getNeed_login() {
+        return need_login;
+    }
+
+    public void setNeed_login(String need_login) {
+        this.need_login = need_login;
+    }
+
     public VersionModule() {
+    }
+
+    @Override
+    public String toString() {
+        return "VersionModule{" +
+                "id='" + id + '\'' +
+                ", version_id=" + version_id +
+                ", module_id=" + module_id +
+                ", config_group_id=" + config_group_id +
+                ", type=" + type +
+                ", module=" + module +
+                ", config_group=" + config_group +
+                ", module_type=" + module_type +
+                ", label='" + label + '\'' +
+                ", index='" + index + '\'' +
+                ", need_login='" + need_login + '\'' +
+                '}';
     }
 
     @Override
@@ -136,11 +170,13 @@ public class VersionModule implements Parcelable {
         dest.writeTypedList(version_id);
         dest.writeTypedList(module_id);
         dest.writeTypedList(config_group_id);
+        dest.writeTypedList(type);
         dest.writeParcelable(this.module, 0);
         dest.writeParcelable(this.config_group, 0);
+        dest.writeParcelable(this.module_type, 0);
         dest.writeString(this.label);
-        dest.writeString(this.type);
         dest.writeString(this.index);
+        dest.writeString(this.need_login);
     }
 
     private VersionModule(Parcel in) {
@@ -148,11 +184,13 @@ public class VersionModule implements Parcelable {
         in.readTypedList(version_id, Version.CREATOR);
         in.readTypedList(module_id, Module.CREATOR);
         in.readTypedList(config_group_id, ConfigGroup.CREATOR);
+        in.readTypedList(type, ModuleType.CREATOR);
         this.module = in.readParcelable(Module.class.getClassLoader());
         this.config_group = in.readParcelable(ConfigGroup.class.getClassLoader());
+        this.module_type = in.readParcelable(ModuleType.class.getClassLoader());
         this.label = in.readString();
-        this.type = in.readString();
         this.index = in.readString();
+        this.need_login = in.readString();
     }
 
     public static final Creator<VersionModule> CREATOR = new Creator<VersionModule>() {
@@ -164,19 +202,4 @@ public class VersionModule implements Parcelable {
             return new VersionModule[size];
         }
     };
-
-    @Override
-    public String toString() {
-        return "VersionModule{" +
-                "id='" + id + '\'' +
-                ", version_id=" + version_id +
-                ", module_id=" + module_id +
-                ", config_group_id=" + config_group_id +
-                ", module=" + module +
-                ", config_group=" + config_group +
-                ", label='" + label + '\'' +
-                ", type='" + type + '\'' +
-                ", index='" + index + '\'' +
-                '}';
-    }
 }

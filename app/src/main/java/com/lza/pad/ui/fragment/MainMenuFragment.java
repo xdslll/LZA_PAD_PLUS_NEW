@@ -22,6 +22,7 @@ import com.joanzapata.android.BaseAdapterHelper;
 import com.joanzapata.android.QuickAdapter;
 import com.lza.pad.R;
 import com.lza.pad.db.dao.ModuleDao;
+import com.lza.pad.db.dao.VersionModuleDao;
 import com.lza.pad.db.loader.VersionModuleLoader;
 import com.lza.pad.db.model.Module;
 import com.lza.pad.db.model.VersionModule;
@@ -106,7 +107,7 @@ public class MainMenuFragment extends BaseUserFragment {
 
         @Override
         public Loader<List<VersionModule>> onCreateLoader(int id, Bundle args) {
-            return new VersionModuleLoader(mActivity, VersionModule.MODULE_TYPE_NORMAL);
+            return new VersionModuleLoader(mActivity, "");
         }
 
         @Override
@@ -115,7 +116,7 @@ public class MainMenuFragment extends BaseUserFragment {
                 mModules.clear();
             }
             for (VersionModule item : data) {
-                //log("module_id:" + item.getModule().getId());
+                mModules.add(item.getModule());
             }
             refreshAdapter();
         }
@@ -166,7 +167,8 @@ public class MainMenuFragment extends BaseUserFragment {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 int effect = ModuleDao.getInstance(mActivity).delete(module);
-                if (effect == 1) {
+                int effect2 = VersionModuleDao.getInstance(mActivity).deleteByModule(module);
+                if (effect == 1 && effect2 == 1) {
                     ToastUtils.showShort(mActivity, R.string.dialog_confirm_remove_success);
                     mModules.remove(position);
                     mAdapter.remove(position);

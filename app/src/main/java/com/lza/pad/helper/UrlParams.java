@@ -89,6 +89,12 @@ public interface UrlParams {
 
     public static final String PAR_TYPE = "type";
 
+    public static final String PAR_CONFIG_GROUP_ID = "config_group_id";
+
+    public static final String PAR_USERNAME = "username";
+
+    public static final String PAR_PASSWORD = "password";
+
     /**
      * Control参数值
      */
@@ -96,6 +102,7 @@ public interface UrlParams {
     public static final String CONTROL_GET_VERSION_MODULE = "get_version_module";
     public static final String CONTROL_GET_SCHOOL_VERSION_BY_BH = "get_school_version_by_bh";
     public static final String CONTROL_GET_ALL_VERSION_MODULE = "get_all_version_module";
+    public static final String CONTROL_GET_CONFIGS = "get_configs";
 
     /**
      * 豆瓣API

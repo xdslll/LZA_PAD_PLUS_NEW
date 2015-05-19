@@ -12,13 +12,26 @@ import com.lza.pad.db.model.User;
  */
 public class UserDao extends LzaDao<User, Integer> {
 
-    public UserDao(Context context) {
+    private static UserDao mInstance = null;
+
+    public static UserDao getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new UserDao(context);
+        }
+        return mInstance;
+    }
+
+    private UserDao(Context context) {
         super(context, User.class);
     }
 
     @Override
     protected boolean checkIfDuplicated(User data) {
         return false;
+    }
+
+    public static User getLoginUser(Context context) {
+        return getInstance(context).queryForFirst();
     }
 
 }

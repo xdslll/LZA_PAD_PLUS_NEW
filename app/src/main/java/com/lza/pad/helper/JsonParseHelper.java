@@ -47,4 +47,24 @@ public class JsonParseHelper {
             return null;
         }
     }
+
+    public static ResponseData<Config> parseConfig(String json) {
+        try {
+            Type type = new TypeToken<ResponseData<Config>>() {}.getType();
+            return GsonHelper.instance().fromJson(json, type);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ResponseData<Configs> parseConfigs(String json) {
+        try {
+            Type type = new TypeToken<ResponseData<Configs>>() {}.getType();
+            return GsonHelper.instance().fromJson(json, type);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
 }

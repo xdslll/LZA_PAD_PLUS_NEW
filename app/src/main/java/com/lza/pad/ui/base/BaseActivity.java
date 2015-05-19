@@ -21,9 +21,11 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.lza.pad.R;
 import com.lza.pad.helper.Consts;
 import com.lza.pad.helper.ImageHelper;
+import com.lza.pad.helper.UrlParams;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
@@ -31,6 +33,7 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 import lza.com.lza.library.http.HttpUtility;
+import lza.com.lza.library.http.UrlRequest;
 import lza.com.lza.library.util.AppLogger;
 import lza.com.lza.library.util.Utility;
 
@@ -40,7 +43,7 @@ import lza.com.lza.library.util.Utility;
  * @author xiads
  * @Date 5/6/15.
  */
-public abstract class BaseActivity extends SherlockFragmentActivity implements Consts.ParamKey {
+public abstract class BaseActivity extends SherlockFragmentActivity implements Consts.ParamKey, Consts.Normal, UrlParams {
 
     protected Activity mCtx;
     private Handler mHandler = new Handler(Looper.getMainLooper());
@@ -85,6 +88,16 @@ public abstract class BaseActivity extends SherlockFragmentActivity implements C
     protected void send(String url, AsyncHttpResponseHandler handler) {
         HttpUtility httpUtility = new HttpUtility(mCtx, HttpUtility.ASYNC_HTTP_CLIENT);
         httpUtility.send(url, handler);
+    }
+
+    protected void post(String url, RequestParams params, AsyncHttpResponseHandler handler) {
+        HttpUtility httpUtility = new HttpUtility(mCtx, HttpUtility.ASYNC_HTTP_CLIENT);
+        httpUtility.post(url, params, handler);
+    }
+
+    protected void post(UrlRequest request, AsyncHttpResponseHandler handler) {
+        HttpUtility httpUtility = new HttpUtility(mCtx, HttpUtility.ASYNC_HTTP_CLIENT);
+        httpUtility.post(request, handler);
     }
 
     protected String wrap(String value, String defaultValue) {

@@ -29,7 +29,7 @@ public class SimpleHttpResponseHandler<T> extends TextHttpResponseHandler {
             onResponseDataEmpty();
         } else {
             //拦截Json的解析
-            if (handlerJson(json)) return;
+            if (handleJson(json)) return;
             //解析Json
             ResponseData<T> data = parseJson(json);
             if (data == null) {
@@ -88,7 +88,7 @@ public class SimpleHttpResponseHandler<T> extends TextHttpResponseHandler {
         handleResponseFailed();
     }
 
-    public boolean handlerJson(String json) {
+    public boolean handleJson(String json) {
         return false;
     }
 

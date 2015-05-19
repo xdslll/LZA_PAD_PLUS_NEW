@@ -243,9 +243,9 @@ public class MainActivity extends BaseSlidingActivity {
                 mNormalVersionModules.clear();
             }
             for (VersionModule data : content) {
-                if (data.getType().equals(VersionModule.MODULE_TYPE_NORMAL)) {
+                if (data.getType().equals("")) {
                     mNormalVersionModules.add(data);
-                } else if (data.getType().equals(VersionModule.MODULE_TYPE_MYLIB)) {
+                } else if (data.getType().equals("")) {
                     mMyLibModule = data;
                 }
             }
@@ -280,7 +280,7 @@ public class MainActivity extends BaseSlidingActivity {
         public void handleResponseFailed(Object... obj) {
             dismissLoadingView();
             mTxtMenuRefresh.setEnabled(true);
-            handleErrorProcess(R.string.school_list_request_failed_title,
+            handleErrorProcess(R.string.dialog_request_failed_title,
                     R.string.school_list_request_failed_message,
                     new Runnable() {
                         @Override
@@ -359,7 +359,7 @@ public class MainActivity extends BaseSlidingActivity {
     }
 
     private void clearLoginUser() {
-        UserDao userDao = new UserDao(mCtx);
+        UserDao userDao = UserDao.getInstance(mCtx);
         long effect = userDao.clear();
         log("共删除了：" + effect + "个用户");
         mUser = null;
@@ -569,7 +569,7 @@ public class MainActivity extends BaseSlidingActivity {
 
     private void showRefreshMenuDialog() {
         Utility.showDialog(mCtx,
-                R.string.school_list_request_failed_title,
+                R.string.dialog_request_failed_title,
                 R.string.module_list_request_failed_message,
                 new DialogInterface.OnClickListener() {
                     @Override

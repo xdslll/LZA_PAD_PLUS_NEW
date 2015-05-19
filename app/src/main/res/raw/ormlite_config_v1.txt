@@ -1,5 +1,5 @@
 #
-# generated on 2015/05/14 09:52:40
+# generated on 2015/05/15 11:51:04
 #
 # --table-start--
 dataClass=com.lza.pad.db.model.Config
@@ -71,6 +71,29 @@ fieldName=url
 # --table-end--
 #################################
 # --table-start--
+dataClass=com.lza.pad.db.model.ModuleType
+tableName=module_type
+# --table-fields-start--
+# --field-start--
+fieldName=id
+id=true
+# --field-end--
+# --field-start--
+fieldName=key
+# --field-end--
+# --field-start--
+fieldName=index
+# --field-end--
+# --field-start--
+fieldName=display_mode
+# --field-end--
+# --field-start--
+fieldName=need_login
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
 dataClass=com.lza.pad.db.model.User
 tableName=user
 # --table-fields-start--
@@ -103,14 +126,20 @@ id=true
 # --field-end--
 # --field-start--
 fieldName=module
-columnName=mod_id
+columnName=module_id
 canBeNull=false
 foreign=true
 foreignAutoRefresh=true
 # --field-end--
 # --field-start--
 fieldName=config_group
-columnName=cfg_group_id
+columnName=config_group_id
+foreign=true
+foreignAutoRefresh=true
+# --field-end--
+# --field-start--
+fieldName=module_type
+columnName=module_type_id
 foreign=true
 foreignAutoRefresh=true
 # --field-end--
@@ -118,10 +147,10 @@ foreignAutoRefresh=true
 fieldName=label
 # --field-end--
 # --field-start--
-fieldName=type
+fieldName=index
 # --field-end--
 # --field-start--
-fieldName=index
+fieldName=need_login
 # --field-end--
 # --table-fields-end--
 # --table-end--
