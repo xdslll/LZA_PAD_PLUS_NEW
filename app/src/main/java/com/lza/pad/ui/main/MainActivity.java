@@ -5,13 +5,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -23,10 +25,12 @@ import com.joanzapata.android.BaseAdapterHelper;
 import com.joanzapata.android.QuickAdapter;
 import com.lza.pad.R;
 import com.lza.pad.db.dao.ModuleDao;
+import com.lza.pad.db.dao.ModuleTypeDao;
 import com.lza.pad.db.dao.UserDao;
 import com.lza.pad.db.dao.VersionModuleDao;
 import com.lza.pad.db.model.ConfigGroup;
 import com.lza.pad.db.model.Module;
+import com.lza.pad.db.model.ModuleType;
 import com.lza.pad.db.model.ResponseData;
 import com.lza.pad.db.model.School;
 import com.lza.pad.db.model.SchoolVersion;
@@ -37,6 +41,7 @@ import com.lza.pad.handler.SimpleHttpResponseHandler;
 import com.lza.pad.helper.JsonParseHelper;
 import com.lza.pad.helper.Settings;
 import com.lza.pad.helper.UrlHelper;
+import com.lza.pad.ui.adapter.MySlidingExpandableAdapter;
 import com.lza.pad.ui.base.BaseSlidingActivity;
 import com.lza.pad.ui.fragment.MainMenuFragment;
 import com.lza.pad.ui.fragment.MyLibraryFragment;
@@ -44,6 +49,7 @@ import com.lza.pad.ui.fragment.SettingsFragment;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import lza.com.lza.library.db.DatabaseTools;
@@ -64,9 +70,10 @@ public class MainActivity extends BaseSlidingActivity {
     Version mVersion;
     List<VersionModule> mNormalVersionModules = new ArrayList<VersionModule>();
     VersionModule mMyLibModule;
+
     String mSchoolBh, mSchoolName;
 
-    ListView mListModule;
+    //ListView mListModule;
     TextView mTxtLoginStatus, mTxtMenuRefresh;
     ViewPager mViewPager;
 
@@ -75,6 +82,16 @@ public class MainActivity extends BaseSlidingActivity {
     MenuPagerAdapter mMenuAdapterPager;
 
     List<Fragment> mMenuFragments;
+
+
+    // add by lfj
+    // ExpandableListView parent list
+    private ArrayList<ModuleType> mModuleTypeParentList = new ArrayList<ModuleType>();
+    // ExpandableListView children list
+    private HashMap<String, ArrayList<VersionModule>> mModuleTypeChildMap = new HashMap<String, ArrayList<VersionModule>>();
+
+    private ExpandableListView mModuleExpandableListView = null;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,7 +115,7 @@ public class MainActivity extends BaseSlidingActivity {
 
         initSlideMenu(R.layout.sliding_menu);
         setContentView(R.layout.main_layout);
-        initActionBar();
+        //initActionBar();
     }
 
     @Override
@@ -126,7 +143,7 @@ public class MainActivity extends BaseSlidingActivity {
 
     private void initView() {
         mViewPager = (ViewPager) findViewById(R.id.main_layout_viewpager);
-        refreshMenu();
+        //refreshMenu();
 
         mTxtLoginStatus = (TextView) findViewById(R.id.sliding_menu_login_status);
         if (mUser != null) {
@@ -142,7 +159,9 @@ public class MainActivity extends BaseSlidingActivity {
             }
         });
 
-        mListModule = (ListView) findViewById(R.id.sliding_menu_list);
+        //mListModule = (ListView) findViewById(R.id.sliding_menu_list);
+        mModuleExpandableListView = (ExpandableListView) findViewById(R.id.sliding_menu_expandable_list);
+
         mTxtMenuRefresh = (TextView) findViewById(R.id.sliding_menu_refresh);
         mTxtMenuRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +178,7 @@ public class MainActivity extends BaseSlidingActivity {
         if (mSchoolVersion != null) {
             if (mVersion != null) {
                 String url = UrlHelper.getAllVersionModule(mVersion);
+                log("Url = " + url);
                 send(url, new VersionModuleHandler());
             } else {
                 showSchoolIllegalDialog();
@@ -170,25 +190,44 @@ public class MainActivity extends BaseSlidingActivity {
     }
 
     private void loadSlidingLayout() {
-        if (mSlidingAdapter != null) {
-            mSlidingAdapter.replaceAll(mNormalVersionModules);
-        } else {
-            mSlidingAdapter = new SlidingLayoutAdapter(mCtx, R.layout.sliding_menu_item, mNormalVersionModules);
-            mListModule.setAdapter(mSlidingAdapter);
-            mListModule.setOnScrollListener(getImageHelper().getScrollListener());
-            mSlidingMenu.setOnCloseListener(new SlidingMenu.OnCloseListener() {
-                @Override
-                public void onClose() {
-                    refreshServiceMenu();
-                }
-            });
-            mSlidingMenu.setOnOpenListener(new SlidingMenu.OnOpenListener() {
-                @Override
-                public void onOpen() {
-                    loadSlidingLayout();
-                }
-            });
-        }
+//        if (mSlidingAdapter != null) {
+//            mSlidingAdapter.replaceAll(mNormalVersionModules);
+//        } else {
+//            mSlidingAdapter = new SlidingLayoutAdapter(mCtx, R.layout.sliding_menu_item, mNormalVersionModules);
+//            mListModule.setAdapter(mSlidingAdapter);
+//            mListModule.setOnScrollListener(getImageHelper().getScrollListener());
+//            mSlidingMenu.setOnCloseListener(new SlidingMenu.OnCloseListener() {
+//                @Override
+//                public void onClose() {
+//                    refreshServiceMenu();
+//                }
+//            });
+//            mSlidingMenu.setOnOpenListener(new SlidingMenu.OnOpenListener() {
+//                @Override
+//                public void onOpen() {
+//                    loadSlidingLayout();
+//                }
+//            });
+//        }
+
+        MySlidingExpandableAdapter mMySlidingExpandableAdapter = new MySlidingExpandableAdapter(mCtx, mModuleTypeParentList, mModuleTypeChildMap,mHandler);
+        mModuleExpandableListView.setAdapter(mMySlidingExpandableAdapter);
+        mModuleExpandableListView.expandGroup(0);
+
+
+        mSlidingMenu.setOnCloseListener(new SlidingMenu.OnCloseListener() {
+            @Override
+            public void onClose() {
+                //refreshServiceMenu();
+                //refreshLibraryMenu();
+            }
+        });
+        mSlidingMenu.setOnOpenListener(new SlidingMenu.OnOpenListener() {
+            @Override
+            public void onOpen() {
+                loadSlidingLayout();
+            }
+        });
     }
 
     /**
@@ -201,13 +240,34 @@ public class MainActivity extends BaseSlidingActivity {
     }
 
     /**
+     * 刷新MyLibraryList
+     */
+    private void refreshLibraryMenu() {
+        Intent mIntent = new Intent();
+        mIntent.setAction(MyLibraryFragment.ACTION_REFRESH_LIST_MENU);
+        sendBroadcast(mIntent);
+    }
+
+    /**
      * 刷新所有的菜单
      */
     private void refreshMenu() {
         mMenuFragments = new ArrayList<Fragment>();
-        mMenuFragments.add(new MainMenuFragment());
-        mMenuFragments.add(new MyLibraryFragment());
+
+//        mMenuFragments.add(new MainMenuFragment());
+//        mMenuFragments.add(new MyLibraryFragment());
+
+        // ------------ change by lfj --------------------
+        for (ModuleType type : mModuleTypeParentList) {
+            if (type.getDisplay_mode().equals("GRID")) {
+                mMenuFragments.add(new MainMenuFragment().newInstance(type.getIndex() , mSchoolVersion , mUser));
+            } else if (type.getDisplay_mode().equals("LIST")) {
+                mMenuFragments.add(new MyLibraryFragment().newInstance(type.getIndex() , mSchoolVersion , mUser));
+            }
+        }
         mMenuFragments.add(new SettingsFragment());
+        // ------------ change by lfj --------------------
+
         mMenuAdapterPager = new MenuPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mMenuAdapterPager);
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -242,14 +302,48 @@ public class MainActivity extends BaseSlidingActivity {
             if (mNormalVersionModules.size() > 0) {
                 mNormalVersionModules.clear();
             }
+
+            if (null != mModuleTypeParentList) {
+                mModuleTypeParentList.clear();
+            }
+
+            if (null != mModuleTypeChildMap) {
+                mModuleTypeChildMap.clear();
+            }
             for (VersionModule data : content) {
-                if (data.getType().equals("")) {
-                    mNormalVersionModules.add(data);
-                } else if (data.getType().equals("")) {
-                    mMyLibModule = data;
+//                if (data.getType().equals("")) {
+//                    mNormalVersionModules.add(data);
+//                } else if (data.getType().equals("")) {
+//                    mMyLibModule = data;
+//                }
+//
+//                if( !index.equals("0")){
+//                    mNormalVersionModules.add(data);
+//                }
+
+                // -------- changed by lfj ----------------
+                // 数据解析
+                String index = data.getType().get(0).getIndex();
+                if (!data.getType().get(0).getIndex().equals("0")) {
+                    // ExpandableListView parentList 添加成员
+                    if (!checkModuleTypeInfo(index)) {
+                        mModuleTypeParentList.add(data.getType().get(0));
+                        // 数据保存到数据库
+                        ModuleTypeDao.getInstance(mCtx).createOrUpdate(data.getType().get(0));
+
+                        mModuleTypeChildMap.put(index, new ArrayList<VersionModule>());
+                    }
+
+                    // ExpandableListView childMap 添加成员
+                    mModuleTypeChildMap.get(index).add(data);
                 }
+                // -------- changed by lfj ----------------
             }
             loadSlidingLayout();
+            // -------- changed by lfj ----------------
+            initActionBar();
+            refreshMenu();
+            // -------- changed by lfj ----------------
             mTxtMenuRefresh.setEnabled(true);
         }
 
@@ -316,15 +410,25 @@ public class MainActivity extends BaseSlidingActivity {
 
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setDisplayOptions(0, android.app.ActionBar.DISPLAY_SHOW_TITLE | android.app.ActionBar.DISPLAY_SHOW_HOME);
-        actionBar.addTab(actionBar.newTab()
-                .setText(R.string.actionbar_tab_lib_service)
-                .setTabListener(new ActionBarTabListener()));
-        actionBar.addTab(actionBar.newTab()
-                .setText(R.string.actionbar_tab_my_lib)
-                .setTabListener(new ActionBarTabListener()));
+
+
+//        actionBar.addTab(actionBar.newTab()
+//                .setText(R.string.actionbar_tab_lib_service)
+//                .setTabListener(new ActionBarTabListener()));
+//        actionBar.addTab(actionBar.newTab()
+//                .setText(R.string.actionbar_tab_my_lib)
+//                .setTabListener(new ActionBarTabListener()));
+
+        // -------- change by lfj ----------------
+        actionBar.removeAllTabs();
+
+        for (ModuleType type : mModuleTypeParentList) {
+            actionBar.addTab(actionBar.newTab().setText(type.getName()).setTabListener(new ActionBarTabListener()));
+        }
         actionBar.addTab(actionBar.newTab()
                 .setText(R.string.actionbar_tab_settings)
                 .setTabListener(new ActionBarTabListener()));
+        // -------- change by lfj ----------------
     }
 
     private void initSlideMenu(int layoutId) {
@@ -344,6 +448,7 @@ public class MainActivity extends BaseSlidingActivity {
     }
 
     public static final int REQUEST_LOGIN = 101;
+
     private void jumpToLogin() {
         Intent intent = new Intent(mCtx, LoginActivity.class);
         if (mSchoolVersion != null) {
@@ -426,6 +531,8 @@ public class MainActivity extends BaseSlidingActivity {
         @Override
         protected void convert(final BaseAdapterHelper helper, final VersionModule item) {
             final Module module = pickFirst(item.getModule_id());
+            final ModuleType moduleType = pickFirst(item.getType());
+
             if (module != null) {
                 String name = module.getName();
                 String ico = module.getIco();
@@ -457,6 +564,7 @@ public class MainActivity extends BaseSlidingActivity {
                             if (configGroup != null) {
                                 item.setConfig_group(configGroup);
                             }
+                            item.setModule_type(moduleType);
 
                             Dao.CreateOrUpdateStatus versionModuleStatus = VersionModuleDao.getInstance(mCtx).createOrUpdate(item);
                             Dao.CreateOrUpdateStatus moduleStatus = ModuleDao.getInstance(mCtx).createOrUpdate(module);
@@ -624,5 +732,35 @@ public class MainActivity extends BaseSlidingActivity {
         }
 
     }
+
+    // ----------- add by lfj ---------------------
+    // 判断需要添加的模块类型是否已经添加到相关列表
+    private boolean checkModuleTypeInfo(String mIndex) {
+        for (ModuleType type : mModuleTypeParentList) {
+            if (mIndex.equals(type.getIndex())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:
+                    String mModuleTypeIndex = msg.getData().getString("moduleTypeIndex");
+                    if( mModuleTypeIndex.equals("1")){
+                        refreshServiceMenu();
+                    }else if( mModuleTypeIndex.equals("2") ){
+                        refreshLibraryMenu();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
 }

@@ -25,8 +25,11 @@ import com.lza.pad.db.dao.ModuleDao;
 import com.lza.pad.db.dao.VersionModuleDao;
 import com.lza.pad.db.loader.VersionModuleLoader;
 import com.lza.pad.db.model.Module;
+import com.lza.pad.db.model.SchoolVersion;
+import com.lza.pad.db.model.User;
 import com.lza.pad.db.model.VersionModule;
 import com.lza.pad.ui.fragment.base.BaseUserFragment;
+import com.lza.pad.ui.main.WebViewActivity;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.util.ArrayList;
@@ -55,6 +58,21 @@ public class MainMenuFragment extends BaseUserFragment {
 
     View mView;
 
+    // --------- add by lfj -------------
+    private String mModuleTypeIndex = null;
+    private SchoolVersion mSchoolVersion = null;
+    private User mUser = null;
+
+    public static MainMenuFragment newInstance(String moduleTypeIndex , SchoolVersion schoolVersion , User mUser) {
+        MainMenuFragment fragment = new MainMenuFragment();
+        Bundle mBundle = new Bundle();
+        mBundle.putString("moduleTypeIndex", moduleTypeIndex);
+        mBundle.putParcelable("schoolVersion", schoolVersion);
+        mBundle.putParcelable("user",mUser);
+        fragment.setArguments(mBundle);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +87,12 @@ public class MainMenuFragment extends BaseUserFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if( null != getArguments() ){
+            this.mModuleTypeIndex = getArguments().getString("moduleTypeIndex");
+            this.mSchoolVersion = getArguments().getParcelable("schoolVersion");
+            this.mUser = getArguments().getParcelable("user");
+        }
+
         if (mView != null) {
             ViewGroup parent = (ViewGroup) mView.getParent();
             if (parent != null) {
@@ -76,7 +100,10 @@ public class MainMenuFragment extends BaseUserFragment {
             }
         } else {
             mView = inflater.inflate(R.layout.main_layout_menu, container, false);
+
             mGrid = (GridView) mView.findViewById(R.id.main_layout_menu_grid);
+            mGrid.setVisibility(View.VISIBLE);
+
             createEmptyView();
         }
         return mView;
@@ -115,8 +142,11 @@ public class MainMenuFragment extends BaseUserFragment {
             if (mModules.size() > 0) {
                 mModules.clear();
             }
+
             for (VersionModule item : data) {
-                mModules.add(item.getModule());
+                if( item.getModule_type().getIndex().equals(mModuleTypeIndex)){
+                    mModules.add(item.getModule());
+                }
             }
             refreshAdapter();
         }
@@ -150,7 +180,18 @@ public class MainMenuFragment extends BaseUserFragment {
             mGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Module mModule = mModules.get(position);
 
+                    Intent mIntent = new Intent(mActivity, WebViewActivity.class);
+
+                    Bundle mBundle = new Bundle();
+                    mBundle.putParcelable("schoolVersion",mSchoolVersion);
+                    mBundle.putParcelable("user",mUser);
+                    mBundle.putParcelable("module", mModule);
+
+                    mIntent.putExtra("data",mBundle);
+
+                    startActivity(mIntent);
                 }
             });
         } else {

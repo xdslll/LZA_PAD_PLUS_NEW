@@ -45,22 +45,22 @@ import lza.com.lza.library.util.Utility;
 /**
  * 前置条件：
  * KEY_IF_SKIP_LOGIN - 是否跳过登录（从配置文件中读取，默认为false）
- *
+ * <p/>
  * 输入：
- *  KEY_USER - 已登录用户（可以为空）
- *  KEY_SCHOOL_VERSION - 学校版本信息（不能为空，如果为空，将返回选择学校列表界面）
- *
- *  此外还需要传入用途
- *      KEY_LOGIN_USAGE - 页面的用途，默认为0，表示成功后跳转到主页面，如果为1则表示登录成功后关闭当前页面
- *
+ * KEY_USER - 已登录用户（可以为空）
+ * KEY_SCHOOL_VERSION - 学校版本信息（不能为空，如果为空，将返回选择学校列表界面）
+ * <p/>
+ * 此外还需要传入用途
+ * KEY_LOGIN_USAGE - 页面的用途，默认为0，表示成功后跳转到主页面，如果为1则表示登录成功后关闭当前页面
+ * <p/>
  * 输出：
- *  KEY_USER
- *  KEY_SCHOOL_VERSION
- *
+ * KEY_USER
+ * KEY_SCHOOL_VERSION
+ * <p/>
  * 跳转：
- *  1、跳转到主页面
- *  2、关闭本页面，返回OK
- *  setResult(Result.OK);
+ * 1、跳转到主页面
+ * 2、关闭本页面，返回OK
+ * setResult(Result.OK);
  *
  * @author xiads
  * @Date 5/7/15.
@@ -243,8 +243,10 @@ public class LoginActivity extends BaseActivity {
                 return false;
             } else {
                 //获取School对象和Version对象，School对象用于获取学校编号，Version对象用于获取登录模块信息
+
                 mSchool = pickFirst(mSchoolVersion.getSchool_bh());
                 mVersion = pickFirst(mSchoolVersion.getVersion_code());
+
                 return true;
             }
         }

@@ -117,22 +117,25 @@ public class UrlHelper implements UrlParams, Consts.Normal {
         /*
          * 封装URL地址
          */
-        String url = schoolVersion.getUrl();
         String method = module.getUrl();
-        StringBuilder builder = new StringBuilder();
-        if (!url.startsWith(HTTP_PROTOCOL)) {
-            builder.append(HTTP_PROTOCOL);
+        if(method.startsWith(HTTP_PROTOCOL)) {
+            request.setUrl(method);
+        } else {
+            String url = schoolVersion.getUrl();
+            StringBuilder builder = new StringBuilder();
+            if (!url.startsWith(HTTP_PROTOCOL)) {
+                builder.append(HTTP_PROTOCOL);
+            }
+            builder.append(url);
+            if (!url.endsWith(SEPARATOR)) {
+                builder.append(SEPARATOR);
+            }
+            if (method.startsWith(SEPARATOR)) {
+                method = method.substring(1, method.length());
+            }
+            builder.append(method);
+            request.setUrl(builder.toString());
         }
-        builder.append(url);
-        if (!url.endsWith(SEPARATOR)) {
-            builder.append(SEPARATOR);
-        }
-        if (method.startsWith(SEPARATOR)) {
-            method = method.substring(1, method.length());
-        }
-        builder.append(method);
-        request.setUrl(builder.toString());
-
         /*
          * 封装URL参数
          */

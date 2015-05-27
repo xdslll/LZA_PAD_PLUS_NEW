@@ -25,6 +25,9 @@ public class ModuleType implements Parcelable {
     String key;
 
     @DatabaseField
+    String name;
+
+    @DatabaseField
     String index;
 
     @DatabaseField
@@ -47,6 +50,14 @@ public class ModuleType implements Parcelable {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getIndex() {
@@ -85,6 +96,7 @@ public class ModuleType implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.id);
         dest.writeString(this.key);
+        dest.writeString(this.name);
         dest.writeString(this.index);
         dest.writeString(this.display_mode);
         dest.writeString(this.need_login);
@@ -93,6 +105,7 @@ public class ModuleType implements Parcelable {
     private ModuleType(Parcel in) {
         this.id = in.readString();
         this.key = in.readString();
+        this.name = in.readString();
         this.index = in.readString();
         this.display_mode = in.readString();
         this.need_login = in.readString();
@@ -107,4 +120,16 @@ public class ModuleType implements Parcelable {
             return new ModuleType[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "ModuleType{" +
+                "id='" + id + '\'' +
+                ", key='" + key + '\'' +
+                ", name='" + name + '\'' +
+                ", index='" + index + '\'' +
+                ", display_mode='" + display_mode + '\'' +
+                ", need_login='" + need_login + '\'' +
+                '}';
+    }
 }

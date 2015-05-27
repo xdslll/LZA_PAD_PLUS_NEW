@@ -54,5 +54,6 @@
     <string name="actionbar_tab_my_lib">我的图书馆</string>
     <string name="actionbar_tab_settings">设置</string>
     <string name="empty_text_add_new_module">请点击“添加服务”增加新的服务</string>
+    <string name="loading_text">"正在加载..."</string>
 
 </resources>

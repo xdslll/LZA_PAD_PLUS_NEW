@@ -9,6 +9,8 @@
         android:layout_centerInParent="true"
         android:id="@+id/school_welcome_text"
         />
-    <include android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_centerInParent="true" layout="@layout/common_loading_view_stub"/>
+    <include android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        layout="@layout/common_loading_view_stub"/>
 </RelativeLayout>

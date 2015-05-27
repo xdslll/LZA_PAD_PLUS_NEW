@@ -112,6 +112,7 @@ public class SchoolListActivity extends BaseActivity {
     private void requestVersionBySchoolBh() {
         showLoadingView();
         String url = UrlHelper.getSchoolVersionByBh(mSchoolBh);
+
         send(url, new SingleSchoolVersionHanlder());
     }
 
@@ -181,7 +182,7 @@ public class SchoolListActivity extends BaseActivity {
     private void setConfig(SchoolVersion schoolVersion) {
         if (schoolVersion != null) {
             School school = pickFirst(schoolVersion.getSchool_bh());
-            if(school != null) {
+            if (school != null) {
                 mSchoolBh = school.getBh();
                 mSchoolName = school.getTitle();
                 Settings.setSchoolBh(mCtx, mSchoolBh);
