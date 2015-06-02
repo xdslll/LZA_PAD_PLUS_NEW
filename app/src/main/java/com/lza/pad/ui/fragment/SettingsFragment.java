@@ -256,7 +256,6 @@ public class SettingsFragment extends BaseUserFragment implements View.OnClickLi
         DownloadInfo mDownloadInfo = new DownloadInfo(url, saveUrl, new DownloadHelper.OnDownloadListener() {
             @Override
             public void onDownloadComplete(long reference) {
-                log("download success");
                 mVersionRightImg.setVisibility(View.VISIBLE);
                 mVersionDownloadPro.setVisibility(View.GONE);
 
@@ -265,7 +264,6 @@ public class SettingsFragment extends BaseUserFragment implements View.OnClickLi
 
             @Override
             public void onDownloadProgress(DownloadHelper.DownloadQuery query) {
-                log(" percent = " + query.getPercent());
                 mVersionDownloadPro.setProgress(query.getPercent());
             }
         });
