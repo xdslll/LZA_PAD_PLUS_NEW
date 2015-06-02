@@ -54,6 +54,30 @@
     <string name="actionbar_tab_my_lib">我的图书馆</string>
     <string name="actionbar_tab_settings">设置</string>
     <string name="empty_text_add_new_module">请点击“添加服务”增加新的服务</string>
-    <string name="loading_text">"正在加载..."</string>
+    <string name="loading_text">正在加载&#8230;</string>
 
+    <!--Setting-->
+    <string name="setting_forbid_mobile_net">3G/2G网络禁止</string>
+    <string name="setting_download_image_text">下载图片</string>
+    <string name="setting_clear_cache">清空缓存</string>
+    <string name="setting_beginner_guide">新手引导</string>
+    <string name="setting_feedback">意见反馈</string>
+    <string name="setting_about">关于</string>
+    <string name="setting_version_check">版本检测</string>
+    <string name="setting_current_version_info">当前版本：</string>
+    <string name="setting_logout">安全退出</string>
+    <string name="setting_logout_txt">当前登录账号：</string>
+    <string name="no_version_update">当前已为最新版本，无需更新!!!</string>
+    <string name="has_version_update">有版本更新，点击确定按钮更新!!!</string>
+    <string name="version_download_suc">新版本下载成功，若安转，点击确定按钮安装!!!</string>
+    <string name="confirm_to_logout">确认退出当前登录？</string>
+
+    <!--Feedback-->
+    <string name="content_text_empty">请输入内容!!</string>
+    <string name="email_text_empty">请输入邮箱地址!!</string>
+    <string name="error_email_address">邮箱地址错误，请重新输入!!!</string>
+
+    <!--about-->
+    <string name="about_version_name">V</string>
+    <string name="about_can_not_find_version_name">找不到版本信息!!!</string>
 </resources>

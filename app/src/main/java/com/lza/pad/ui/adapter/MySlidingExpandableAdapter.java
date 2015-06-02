@@ -51,6 +51,7 @@ public class MySlidingExpandableAdapter extends BaseExpandableListAdapter {
 
 
     // data
+    private List<Configs> mConfigs = new ArrayList<Configs>();
     private List<Config> mModuleConfigs = new ArrayList<Config>();
 
     public MySlidingExpandableAdapter(Context mContext, ArrayList<ModuleType> mGroupList,
@@ -159,13 +160,25 @@ public class MySlidingExpandableAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View view) {
                     if (isSubscribe(mModule.getId())) {
+                        // ---------- å–æ¶ˆè®¢é˜…æ¨¡å—åˆ é™¤æ•°æ®åº“ä¸­ç›¸å…³æ•°æ® start ---------
                         int effect = ModuleDao.getInstance(mContext).delete(mModule);
                         int effect2 = VersionModuleDao.getInstance(mContext).delete(mVersionModule);
+
+                        if( ( null != mVersionModule.getConfig_group_id())&&(mVersionModule.getConfig_group_id().size() > 0) ){
+                            ConfigGroupDao.getInstance(mContext).delete(mVersionModule.getConfig_group_id().get(0));
+                        }
+
+                        for(Configs configs : mConfigs){
+                            ConfigsDao.getInstance(mContext).delete(configs);
+                            ConfigDao.getInstance(mContext).delete(configs.getConfig_id().get(0));
+                        }
+                        // ---------- å–æ¶ˆè®¢é˜…æ¨¡å—åˆ é™¤æ•°æ®åº“ä¸­ç›¸å…³æ•°æ® end -----------
+
                         if (effect == 1 && effect2 == 1) {
                             mChildViewHolder.mSubscribeBtn.setText(R.string.menu_subscribe);
                         }
                     } else {
-                        // ------------ ½«´ÓÍøÂç»ñÈ¡µÄÊı¾İ´æ´¢µ½Êı¾İ¿â start ----------------
+                        // ------------ å°†è·å–çš„ç½‘ç»œæ•°æ®å­˜å‚¨åˆ°æ•°æ®åº“ä¸­ start ----------------
                         mVersionModule.setModule(mModule);
 
                         ConfigGroup configGroup = null;
@@ -176,7 +189,6 @@ public class MySlidingExpandableAdapter extends BaseExpandableListAdapter {
                                 ConfigGroupDao.getInstance(mContext).createOrUpdate(configGroup);
 
                                 requestConfig(configGroup);
-
                             }
                         }
 
@@ -191,7 +203,7 @@ public class MySlidingExpandableAdapter extends BaseExpandableListAdapter {
                         Dao.CreateOrUpdateStatus versionModuleStatus = VersionModuleDao.getInstance(mContext).createOrUpdate(mVersionModule);
                         Dao.CreateOrUpdateStatus moduleStatus = ModuleDao.getInstance(mContext).createOrUpdate(mModule);
 
-                        // ------------ ½«´ÓÍøÂç»ñÈ¡µÄÊı¾İ´æ´¢µ½Êı¾İ¿â end ----------------
+                        // ------------ å°†è·å–çš„ç½‘ç»œæ•°æ®å­˜å‚¨åˆ°æ•°æ®åº“ä¸­ end ----------------
 
                         if (DatabaseTools.isCreateOrUpdateSuccess(versionModuleStatus) &&
                                 DatabaseTools.isCreateOrUpdateSuccess(moduleStatus)) {
@@ -235,7 +247,6 @@ public class MySlidingExpandableAdapter extends BaseExpandableListAdapter {
 
     private void requestConfig(ConfigGroup mConfigGroup) {
         String url = UrlHelper.getConfigs(mConfigGroup);
-        //send(url, new LoginConfigHandler());
         HttpUtility httpUtility = new HttpUtility(mContext, HttpUtility.ASYNC_HTTP_CLIENT);
         httpUtility.send(url, new getConfigHandler());
     }
@@ -249,11 +260,18 @@ public class MySlidingExpandableAdapter extends BaseExpandableListAdapter {
 
         @Override
         public void handleRespone(List<Configs> content) {
+            if( null != mConfigs ){
+                mConfigs.clear();
+            }
+            if( null != mModuleConfigs ){
+                mModuleConfigs.clear();
+            }
             for (Configs configs : content) {
 //                if (!isEmpty(configs.getConfig_id())) {
 //                    //mLoginConfigs.add(pickFirst(configs.getConfig_id()));
 //                }
 
+                mConfigs.add(configs);
                 ConfigsDao.getInstance(mContext).createOrUpdate(configs);
 
                 if(configs.getConfig_id().size() > 0){

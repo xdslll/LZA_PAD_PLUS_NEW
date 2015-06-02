@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -236,6 +237,28 @@ public class Utility {
             return "";
         }
     }
+
+    /**
+     *
+     * 获取应用名称
+     *
+     * @param context
+     * @return
+     */
+    public static String getApplicationName(Context context){
+        PackageManager packageManager = null;
+        ApplicationInfo applicationInfo = null;
+        try {
+            packageManager = context.getApplicationContext().getPackageManager();
+            applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            applicationInfo = null;
+        }
+        String applicationName =
+                (String) packageManager.getApplicationLabel(applicationInfo);
+        return applicationName;
+    }
+
 
     /**
      * 获取版本名称

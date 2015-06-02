@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.KeyEvent;
+import android.view.Window;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.lza.pad.R;
 import com.lza.pad.db.loader.ConfigLoader;
 import com.lza.pad.db.model.Config;
@@ -37,23 +41,26 @@ public class WebViewActivity extends BaseActivity {
     private SchoolVersion mSchoolVersion = null;
     private User mUser = null;
 
-    List<Config> mModuleConfigs = new ArrayList<Config>();
+    private List<Config> mModuleConfigs = new ArrayList<Config>();
 
     // controls
     private WebView mWebView = null;
-    WebSettings mWebSettings;
+    private WebSettings mWebSettings = null;
 
     private boolean isInit = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.webview_activity_layout);
 
         Bundle mBundle = getIntent().getBundleExtra("data");
         mModuleInfo = mBundle.getParcelable("module");
         mSchoolVersion = mBundle.getParcelable("schoolVersion");
         mUser = mBundle.getParcelable("user");
+
+        initActionBar();
     }
 
     @Override
@@ -69,8 +76,40 @@ public class WebViewActivity extends BaseActivity {
         super.onPause();
     }
 
-    private void initView(){
+    private void initView() {
+        setContentView(R.layout.webview_activity_layout);
         mWebView = (WebView) findViewById(R.id.webview_activity_web);
+    }
+
+    private void initActionBar(){
+        ActionBar mActionBar = getSupportActionBar();
+        log(" mActionBar = " + mActionBar);
+        if( null == mActionBar )
+            return;
+
+        mActionBar.setDisplayShowTitleEnabled(true);
+        mActionBar.setTitle(mModuleInfo.getName());
+
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.action_bar_more_menu ,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if( item.getItemId() == android.R.id.home ){
+            if ( null != mWebView && mWebView.canGoBack()) {
+                mWebView.goBack();
+            }else{
+                WebViewActivity.this.finish();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void readDataFromDB(){
@@ -91,7 +130,13 @@ public class WebViewActivity extends BaseActivity {
 
         @Override
         public void onLoadFinished(Loader<List<Config>> loader, List<Config> data) {
-            mModuleConfigs.addAll(data);
+            if( null != mModuleConfigs ){
+                mModuleConfigs.clear();
+            }
+
+            if( !isEmpty(data) ){
+                mModuleConfigs.addAll(data);
+            }
 
             initWebView(buildLoginUrl());
         }
@@ -103,7 +148,6 @@ public class WebViewActivity extends BaseActivity {
     }
 
     private void initWebView(UrlRequest request) {
-        log("[112]≥ı ºªØWebView");
         mWebSettings = mWebView.getSettings();
         mWebSettings.setJavaScriptEnabled(true);
         mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true);
@@ -112,7 +156,6 @@ public class WebViewActivity extends BaseActivity {
         mWebView.setWebChromeClient(new LoginWebChromeClient());
 
         //mWebView.addJavascriptInterface(new InJavaScript(this), "injs");
-        //mWebView.loadUrl(url);
 
         mWebView.postUrl(request.getUrl(), request.getPostData());
     }
@@ -157,15 +200,15 @@ public class WebViewActivity extends BaseActivity {
     }
 
 
+    // ÁªÑË£ÖÊ®°ÂùóËØ∑Ê±ÇÂú∞ÂùÄÂíåÂèÇÊï∞
     private UrlRequest buildLoginUrl() {
-        log("[111]◊È◊∞µ«¬ºƒ£øÈ«Î«Ûµÿ÷∑∫Õ≤Œ ˝");
         return UrlHelper.buildUrl(mSchoolVersion, mModuleInfo, mModuleConfigs, mUser);
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
-            if (mWebView != null) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK) ) {
+            if ( null != mWebView && mWebView.canGoBack() ) {
                 mWebView.goBack();
                 return true;
             }

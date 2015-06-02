@@ -27,16 +27,32 @@
             android:name=".ui.main.LoginActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.main.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:uiOptions="splitActionBarWhenNarrow" />
+
         <activity
             android:name=".ui.main.WebViewActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:uiOptions="splitActionBarWhenNarrow"
-            android:theme="@android:style/Theme.NoTitleBar"/>
+            android:theme="@android:style/Theme.Holo" />
+        <activity
+            android:name=".ui.main.FeedbackActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo" />
+        <activity
+            android:name=".ui.main.AboutActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo" />
+        <activity
+            android:name=".ui.main.BeginnerGuideActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="UMENG_APPKEY"

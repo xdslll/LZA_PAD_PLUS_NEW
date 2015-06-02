@@ -48,6 +48,7 @@ import com.lza.pad.ui.fragment.MyLibraryFragment;
 import com.lza.pad.ui.fragment.SettingsFragment;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -92,7 +93,6 @@ public class MainActivity extends BaseSlidingActivity {
 
     private ExpandableListView mModuleExpandableListView = null;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mUser = getIntent().getParcelableExtra(KEY_USER);
@@ -116,14 +116,15 @@ public class MainActivity extends BaseSlidingActivity {
         initSlideMenu(R.layout.sliding_menu);
         setContentView(R.layout.main_layout);
         //initActionBar();
+
+        if (checkSchoolBh()) {
+            initView();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (checkSchoolBh()) {
-            initView();
-        }
     }
 
     @Override
@@ -178,7 +179,6 @@ public class MainActivity extends BaseSlidingActivity {
         if (mSchoolVersion != null) {
             if (mVersion != null) {
                 String url = UrlHelper.getAllVersionModule(mVersion);
-                log("Url = " + url);
                 send(url, new VersionModuleHandler());
             } else {
                 showSchoolIllegalDialog();
@@ -210,7 +210,7 @@ public class MainActivity extends BaseSlidingActivity {
 //            });
 //        }
 
-        MySlidingExpandableAdapter mMySlidingExpandableAdapter = new MySlidingExpandableAdapter(mCtx, mModuleTypeParentList, mModuleTypeChildMap,mHandler);
+        MySlidingExpandableAdapter mMySlidingExpandableAdapter = new MySlidingExpandableAdapter(mCtx, mModuleTypeParentList, mModuleTypeChildMap,new mHandler(MainActivity.this));
         mModuleExpandableListView.setAdapter(mMySlidingExpandableAdapter);
         mModuleExpandableListView.expandGroup(0);
 
@@ -225,7 +225,7 @@ public class MainActivity extends BaseSlidingActivity {
         mSlidingMenu.setOnOpenListener(new SlidingMenu.OnOpenListener() {
             @Override
             public void onOpen() {
-                loadSlidingLayout();
+                //loadSlidingLayout();
             }
         });
     }
@@ -265,7 +265,7 @@ public class MainActivity extends BaseSlidingActivity {
                 mMenuFragments.add(new MyLibraryFragment().newInstance(type.getIndex() , mSchoolVersion , mUser));
             }
         }
-        mMenuFragments.add(new SettingsFragment());
+        mMenuFragments.add(new SettingsFragment().newInstance(mSchoolVersion ,mUser));
         // ------------ change by lfj --------------------
 
         mMenuAdapterPager = new MenuPagerAdapter(getSupportFragmentManager());
@@ -744,23 +744,24 @@ public class MainActivity extends BaseSlidingActivity {
         return false;
     }
 
-    private Handler mHandler = new Handler(){
+    private static class mHandler extends Handler {
+        private WeakReference<MainActivity> mWeakActivity;
+
+        public mHandler(MainActivity activity) {
+            mWeakActivity = new WeakReference<MainActivity>(activity);
+        }
+
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what){
-                case 1:
-                    String mModuleTypeIndex = msg.getData().getString("moduleTypeIndex");
-                    if( mModuleTypeIndex.equals("1")){
-                        refreshServiceMenu();
-                    }else if( mModuleTypeIndex.equals("2") ){
-                        refreshLibraryMenu();
-                    }
-                    break;
-                default:
-                    break;
+            MainActivity activity = mWeakActivity.get();
+            if( msg.what == 1 ){
+                String mModuleTypeIndex = msg.getData().getString("moduleTypeIndex");
+                if( mModuleTypeIndex.equals("1")){
+                    activity.refreshServiceMenu();
+                }else if( mModuleTypeIndex.equals("2") ){
+                    activity.refreshLibraryMenu();
+                }
             }
         }
-    };
-
+    }
 }

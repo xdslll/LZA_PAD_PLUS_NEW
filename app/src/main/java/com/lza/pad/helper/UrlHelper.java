@@ -34,6 +34,13 @@ public class UrlHelper implements UrlParams, Consts.Normal {
         return builder.toString();
     }
 
+    public static String getUpdateVersionInfo(String versionCode){
+        Map<String, String> par = new HashMap<String, String>();
+        par.put(PAR_CONTROL, CONTROL_GET_UPDATE_VERSION_INFO);
+        par.put(PAR_VERSION_CODE, versionCode);
+        return generateUrl(par);
+    }
+
     public static String getSchoolVersion() {
         Map<String, String> par = new HashMap<String, String>();
         par.put(PAR_CONTROL, CONTROL_GET_SCHOOL_VERSION);

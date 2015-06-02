@@ -67,4 +67,14 @@ public class JsonParseHelper {
             return null;
         }
     }
+
+    public static ResponseData<NewVersionInfo> parseNewVersionInfo(String json){
+        try {
+            Type type = new TypeToken<ResponseData<NewVersionInfo>>() {}.getType();
+            return GsonHelper.instance().fromJson(json, type);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
 }

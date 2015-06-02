@@ -27,6 +27,7 @@ public class FileManager {
     private static final String WEBVIEW_FAVICON = "lza/favicon";
     private static final String LOG = "lza/log";
     private static final String LZA = "lza";
+    private static final String APK_CACHE = "lza/apk";
 
     public static String getSdCardPath(Context c) {
         if (isExternalStorageMounted()) {
@@ -247,5 +248,17 @@ public class FileManager {
                 outBuff.close();
             }
         }
+    }
+
+    public static String getApkDirPath(Context c) {
+        if (!TextUtils.isEmpty(getSdCardPath(c))) {
+            String path = getSdCardPath(c) + File.separator + APK_CACHE + File.separator;
+            File file = new File(path);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            return path;
+        }
+        return "";
     }
 }

@@ -24,4 +24,9 @@
     <dimen name="main_layout_module_img_width">60dp</dimen>
     <dimen name="main_layout_menu_img_width">60dp</dimen>
     <dimen name="main_layout_menu_text_size">18sp</dimen>
+
+    <!--activity_feedback_layout.xml-->
+    <dimen name="feed_back_text_enter_control_height">200dp</dimen>
+    <integer name="feed_back_text_enter_control_min_lines">3</integer>
+    <integer name="feed_back_text_enter_control_max_length">500</integer>
 </resources>

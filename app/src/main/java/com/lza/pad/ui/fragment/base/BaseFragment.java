@@ -1,5 +1,7 @@
 package com.lza.pad.ui.fragment.base;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,6 +12,7 @@ import com.loopj.android.http.RequestParams;
 import com.lza.pad.helper.Consts;
 import com.lza.pad.helper.ImageHelper;
 
+import java.io.File;
 import java.util.List;
 
 import lza.com.lza.library.http.HttpUtility;
@@ -78,5 +81,12 @@ public class BaseFragment extends Fragment implements Consts.ParamKey {
 
     protected ImageHelper getImageHelper() {
         return ImageHelper.getInstance(mActivity);
+    }
+
+    protected void installApk(File file) {
+        Uri uri = Uri.fromFile(file);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, "application/vnd.android.package-archive");
+        startActivity(intent);
     }
 }

@@ -63,12 +63,12 @@ public class MainMenuFragment extends BaseUserFragment {
     private SchoolVersion mSchoolVersion = null;
     private User mUser = null;
 
-    public static MainMenuFragment newInstance(String moduleTypeIndex , SchoolVersion schoolVersion , User mUser) {
+    public MainMenuFragment newInstance(String moduleTypeIndex , SchoolVersion schoolVersion , User mUser) {
         MainMenuFragment fragment = new MainMenuFragment();
         Bundle mBundle = new Bundle();
         mBundle.putString("moduleTypeIndex", moduleTypeIndex);
         mBundle.putParcelable("schoolVersion", schoolVersion);
-        mBundle.putParcelable("user",mUser);
+        mBundle.putParcelable("user", mUser);
         fragment.setArguments(mBundle);
         return fragment;
     }
@@ -182,16 +182,23 @@ public class MainMenuFragment extends BaseUserFragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Module mModule = mModules.get(position);
 
-                    Intent mIntent = new Intent(mActivity, WebViewActivity.class);
+                    Intent mIntent = null;
+                    if( mModule.getType().equals("WEB")){
+                        mIntent = new Intent(mActivity, WebViewActivity.class);
 
-                    Bundle mBundle = new Bundle();
-                    mBundle.putParcelable("schoolVersion",mSchoolVersion);
-                    mBundle.putParcelable("user",mUser);
-                    mBundle.putParcelable("module", mModule);
+                        Bundle mBundle = new Bundle();
+                        mBundle.putParcelable("schoolVersion",mSchoolVersion);
+                        mBundle.putParcelable("user",mUser);
+                        mBundle.putParcelable("module", mModule);
 
-                    mIntent.putExtra("data",mBundle);
+                        mIntent.putExtra("data", mBundle);
+                    }else if( mModule.getType().equals("NATIVE")){
 
-                    startActivity(mIntent);
+                    }
+
+                    if( null != mIntent)
+                        startActivity(mIntent);
+
                 }
             });
         } else {

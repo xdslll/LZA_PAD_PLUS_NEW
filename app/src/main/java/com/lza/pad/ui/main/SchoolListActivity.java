@@ -171,7 +171,6 @@ public class SchoolListActivity extends BaseActivity {
 
         overridePendingTransition(0, 0);
         startActivity(intent);
-
     }
 
     /**

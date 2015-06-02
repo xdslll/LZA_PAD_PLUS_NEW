@@ -103,6 +103,7 @@ public interface UrlParams {
     public static final String CONTROL_GET_SCHOOL_VERSION_BY_BH = "get_school_version_by_bh";
     public static final String CONTROL_GET_ALL_VERSION_MODULE = "get_all_version_module";
     public static final String CONTROL_GET_CONFIGS = "get_configs";
+    public static final String CONTROL_GET_UPDATE_VERSION_INFO = "get_version_update";
 
     /**
      * 豆瓣API

@@ -29,6 +29,7 @@ import com.lza.pad.db.model.SchoolVersion;
 import com.lza.pad.db.model.User;
 import com.lza.pad.db.model.VersionModule;
 import com.lza.pad.ui.fragment.base.BaseUserFragment;
+import com.lza.pad.ui.main.WebViewActivity;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class MyLibraryFragment extends BaseUserFragment {
     private boolean isInit = true;
     private refreshMenuReceiver mRefreshMenuReceiver = new refreshMenuReceiver();
 
-    public static MyLibraryFragment newInstance(String moduleTypeIndex  , SchoolVersion schoolVersion , User mUser){
+    public  MyLibraryFragment newInstance(String moduleTypeIndex  , SchoolVersion schoolVersion , User mUser){
         MyLibraryFragment mFragment = new MyLibraryFragment();
         Bundle mBundle = new Bundle();
         mBundle.putString("moduleTypeIndex", moduleTypeIndex);
@@ -179,7 +180,24 @@ public class MyLibraryFragment extends BaseUserFragment {
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Module mModule = mModuleList.get(i);
 
+                    Intent mIntent = null;
+                    if( mModule.getType().equals("WEB")){
+                        mIntent = new Intent(mActivity, WebViewActivity.class);
+
+                        Bundle mBundle = new Bundle();
+                        mBundle.putParcelable("schoolVersion",mSchoolVersion);
+                        mBundle.putParcelable("user",mUser);
+                        mBundle.putParcelable("module", mModule);
+
+                        mIntent.putExtra("data", mBundle);
+                    }else if( mModule.getType().equals("NATIVE")){
+
+                    }
+
+                    if( null != mIntent)
+                        startActivity(mIntent);
                 }
             });
         }else{
