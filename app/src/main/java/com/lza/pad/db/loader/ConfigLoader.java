@@ -10,6 +10,7 @@ import java.util.List;
 import lza.com.lza.library.db.AbstractLoader;
 
 /**
+ *
  * Created by lansing on 2015/5/27.
  */
 public class ConfigLoader extends AbstractLoader<List<Config>> {

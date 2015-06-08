@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
+ * 更新的版本信息
+ *
  * Created by lansing on 2015/6/2.
  */
 public class UpdateVersion implements Parcelable {

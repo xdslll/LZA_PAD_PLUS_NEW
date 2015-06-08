@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 import lza.com.lza.library.util.ToastUtils;
 
 /**
+ *
  * Created by lansing on 2015/6/1.
  */
 public class FeedbackActivity extends BaseActivity implements View.OnClickListener{

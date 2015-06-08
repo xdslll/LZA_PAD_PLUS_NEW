@@ -29,6 +29,7 @@ import com.lza.pad.db.model.SchoolVersion;
 import com.lza.pad.db.model.User;
 import com.lza.pad.db.model.VersionModule;
 import com.lza.pad.ui.fragment.base.BaseUserFragment;
+import com.lza.pad.ui.main.MyDownloadActivity;
 import com.lza.pad.ui.main.WebViewActivity;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
@@ -193,7 +194,7 @@ public class MainMenuFragment extends BaseUserFragment {
 
                         mIntent.putExtra("data", mBundle);
                     }else if( mModule.getType().equals("NATIVE")){
-
+                        mIntent = new Intent(mActivity , MyDownloadActivity.class);
                     }
 
                     if( null != mIntent)

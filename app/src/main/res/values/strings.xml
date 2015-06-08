@@ -80,4 +80,10 @@
     <!--about-->
     <string name="about_version_name">V</string>
     <string name="about_can_not_find_version_name">找不到版本信息!!!</string>
+
+    <!--myDownload-->
+    <string name="actionbar_tab_e_book">电子书</string>
+    <string name="actionbar_tab_magazine">期刊</string>
+    <string name="actionbar_tab_literature">文献</string>
+    <string name="file_cannot_open">文件不能打开，请下载相关软件！</string>
 </resources>

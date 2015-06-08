@@ -253,6 +253,12 @@ public class SettingsFragment extends BaseUserFragment implements View.OnClickLi
 
         FileManager.createNewFileInSDCard( FileManager.getApkDirPath(mActivity));
 
+        // 若有之前下载的版本apk，删除
+        File mDesApk = new File(saveUrl);
+        if( mDesApk.exists() ){
+            mDesApk.delete();
+        }
+
         DownloadInfo mDownloadInfo = new DownloadInfo(url, saveUrl, new DownloadHelper.OnDownloadListener() {
             @Override
             public void onDownloadComplete(long reference) {

@@ -7,6 +7,7 @@ import com.lza.pad.R;
 import com.lza.pad.ui.base.BaseActivity;
 
 /**
+ *
  * Created by lansing on 2015/6/1.
  */
 public class BeginnerGuideActivity extends BaseActivity{

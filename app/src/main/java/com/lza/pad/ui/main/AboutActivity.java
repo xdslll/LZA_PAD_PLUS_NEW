@@ -13,6 +13,7 @@ import com.lza.pad.ui.base.BaseActivity;
 import lza.com.lza.library.util.Utility;
 
 /**
+ *
  * Created by lansing on 2015/6/1.
  */
 public class AboutActivity extends BaseActivity {

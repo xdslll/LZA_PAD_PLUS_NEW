@@ -31,6 +31,7 @@ import lza.com.lza.library.http.UrlRequest;
 import lza.com.lza.library.util.Utility;
 
 /**
+ *
  * Created by lansing on 2015/5/26.
  */
 public class WebViewActivity extends BaseActivity {
