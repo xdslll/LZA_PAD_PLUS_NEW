@@ -10,7 +10,7 @@ import android.support.v4.view.ViewPager;
 import com.actionbarsherlock.app.ActionBar;
 import com.lza.pad.R;
 import com.lza.pad.ui.base.BaseActivity;
-import com.lza.pad.ui.fragment.EBookFragment;
+import com.lza.pad.ui.fragment.EbookFragment;
 import com.lza.pad.ui.fragment.LiteratureFragment;
 import com.lza.pad.ui.fragment.MagazineFragment;
 
@@ -111,7 +111,7 @@ public class MyDownloadActivity extends BaseActivity {
         @Override
         public Fragment getItem(int position) {
             if( position == E_BOOK_POSITION ){
-                return new EBookFragment();
+                return new EbookFragment();
             }else if( position == MAGAZINE_POSITION ){
                 return new MagazineFragment();
             }else if (position == LITERATURE_POSITION){
