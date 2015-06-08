@@ -113,6 +113,18 @@ public class SettingsFragment extends BaseUserFragment implements View.OnClickLi
         initData();
     }
 
+    private void initData() {
+        boolean isForbidMobileNet = mySharedPreferences.getBoolean("isForbidMobileNet", false);
+        mMySlipSwitch.updateSwitchState(isForbidMobileNet);
+
+        mCacheSizeTxt.setText(FileManager.getCacheSize(mActivity));
+        mVersionInfoTxt.setText(getString(R.string.setting_current_version_info) + Utility.getVersionName(mActivity));
+
+        if( null != mUser ){
+            mLogoutUserInfoTxt.setText(getString(R.string.setting_logout_txt) + mUser.getUsername());
+        }
+    }
+
     private void initView() {
         mMySlipSwitch = (MySlipSwitch) mView.findViewById(R.id.setting_mobile_forbid_slip_switch);
         mMySlipSwitch.setImageResource(R.mipmap.setting_switch_on,
@@ -141,16 +153,6 @@ public class SettingsFragment extends BaseUserFragment implements View.OnClickLi
         mLogoutLayout = (RelativeLayout) mView.findViewById(R.id.setting_logout_layout);
         mLogoutLayout.setOnClickListener(this);
         mLogoutUserInfoTxt = (TextView) mView.findViewById(R.id.setting_logout_user_info);
-    }
-
-    private void initData() {
-        boolean isForbidMobileNet = mySharedPreferences.getBoolean("isForbidMobileNet", false);
-        mMySlipSwitch.updateSwitchState(isForbidMobileNet);
-
-        mCacheSizeTxt.setText(FileManager.getCacheSize(mActivity));
-
-        mVersionInfoTxt.setText(getString(R.string.setting_current_version_info) + Utility.getVersionName(mActivity));
-        mLogoutUserInfoTxt.setText(getString(R.string.setting_logout_txt) + mUser.getUsername());
     }
 
     @Override
