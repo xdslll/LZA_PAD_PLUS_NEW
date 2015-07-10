@@ -1,15 +1,22 @@
 package com.lza.pad.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.lza.pad.R;
+import com.lza.pad.db.loader.ConfigLoader;
+import com.lza.pad.db.loader.EBookLoader;
+import com.lza.pad.db.model.Config;
 import com.lza.pad.db.model.EBookInfo;
 import com.lza.pad.ui.adapter.EBookAdapter;
 import com.lza.pad.ui.fragment.base.BaseUserFragment;
+import com.lza.pad.ui.main.EBookDetailsActivity;
 import com.lza.pad.ui.zrc.widget.SimpleFooter;
 import com.lza.pad.ui.zrc.widget.SimpleHeader;
 import com.lza.pad.ui.zrc.widget.ZrcListView;
@@ -24,6 +31,9 @@ import java.util.List;
  * Created by lansing on 2015/6/3.
  */
 public class EbookFragment extends BaseUserFragment{
+    private static final int LOADER_ID = 4;
+    private boolean isInit = true;
+
     // controls
     private ZrcListView mZrcListView = null;
 
@@ -94,7 +104,14 @@ public class EbookFragment extends BaseUserFragment{
         mZrcListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(ZrcListView parent, View view, int position, long id) {
+                Intent mIntent = new Intent(mActivity , EBookDetailsActivity.class);
 
+                Bundle mBundle = new Bundle();
+                mBundle.putBoolean("isFromScan" , false);
+                mBundle.putParcelable("book_info", mEBookList.get(position));
+
+                mIntent.putExtras(mBundle);
+                startActivity(mIntent);
             }
         });
     }
@@ -122,14 +139,42 @@ public class EbookFragment extends BaseUserFragment{
     }
 
     private void initData(){
-        mEBookList.clear();
+        readDataFromDB();
+    }
 
-        EBookInfo mEBookInfo = new EBookInfo();
-        mEBookInfo.setName("宇宙奇景101图");
-        mEBookInfo.setPress("人们邮电出版社2015");
-        mEBookList.add(mEBookInfo);
+    private void readDataFromDB(){
+        if (isInit) {
+            mActivity.getSupportLoaderManager().initLoader(LOADER_ID, null, new configLoaderCallbacks());
+            isInit = false;
+        } else {
+            mActivity.getSupportLoaderManager().restartLoader(LOADER_ID, null, new configLoaderCallbacks());
+        }
+    }
 
-        mEBookAdapter = new EBookAdapter(mActivity , R.layout.item_ebook_layout , mEBookList);
-        mZrcListView.setAdapter(mEBookAdapter);
+    private class configLoaderCallbacks implements LoaderManager.LoaderCallbacks<List<EBookInfo>>{
+
+        @Override
+        public Loader<List<EBookInfo>> onCreateLoader(int id, Bundle args) {
+            return new EBookLoader(mActivity);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<List<EBookInfo>> loader, List<EBookInfo> data) {
+            if( null != mEBookList ){
+                mEBookList.clear();
+            }
+
+            if( !isEmpty(data) ){
+                mEBookList.addAll(data);
+            }
+
+            mEBookAdapter = new EBookAdapter(mActivity , R.layout.item_ebook_layout , mEBookList);
+            mZrcListView.setAdapter(mEBookAdapter);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<List<EBookInfo>> loader) {
+            loader.forceLoad();
+        }
     }
 }

@@ -77,4 +77,25 @@ public class JsonParseHelper {
             return null;
         }
     }
+
+    public static ResponseData<PadResource> parseResourceResponse(String json) {
+        try {
+            Type type = new TypeToken<ResponseData<PadResource>>() {}.getType();
+            return GsonHelper.instance().fromJson(json, type);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ResponseData<MagazineInfo> parseMagazineInfo(String json){
+        try {
+            Type type = new TypeToken<ResponseData<MagazineInfo>>() {}.getType();
+            return GsonHelper.instance().fromJson(json, type);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
 }

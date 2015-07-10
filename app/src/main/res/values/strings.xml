@@ -33,6 +33,7 @@
     <string name="menu_login">登录</string>
     <string name="menu_quit">退出</string>
     <string name="menu_add_module">添加服务</string>
+    <string name="menu_scan">扫描</string>
 
     <!-- login -->
     <string name="login_success">登录成功！</string>
@@ -71,6 +72,7 @@
     <string name="has_version_update">有版本更新，点击确定按钮更新!!!</string>
     <string name="version_download_suc">新版本下载成功，若安转，点击确定按钮安装!!!</string>
     <string name="confirm_to_logout">确认退出当前登录？</string>
+    <string name="wifi_is_disconnected">网络未连接，请检查网络连接状况</string>
 
     <!--Feedback-->
     <string name="content_text_empty">请输入内容!!</string>
@@ -82,8 +84,38 @@
     <string name="about_can_not_find_version_name">找不到版本信息!!!</string>
 
     <!--myDownload-->
+    <string name="my_download_title">我的下载</string>
     <string name="actionbar_tab_e_book">电子书</string>
     <string name="actionbar_tab_magazine">期刊</string>
     <string name="actionbar_tab_literature">文献</string>
     <string name="file_cannot_open">文件不能打开，请下载相关软件！</string>
+
+    <!--scan-->
+    <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
+    <string name="scan_title">扫描二维码</string>
+    <string name="scan_failed">扫描失败，请重试!!</string>
+
+    <!--EBookDetails-->
+    <string name="e_book_page_title">书籍详情</string>
+    <string name="e_book_author">作者：</string>
+    <string name="e_book_publisher">出版社：</string>
+    <string name="e_book_time">出版日期：</string>
+    <string name="e_book_btn_text_download">下载电子书</string>
+    <string name="e_book_btn_text_open">打开</string>
+    <string name="e_book_download_success">电子书下载成功!!</string>
+
+    <!--magazine_introduce-->
+    <string name="magazine_introduce_text_name">刊名</string>
+    <string name="magazine_introduce_text_press">出版地</string>
+    <string name="magazine_introduce_text_issn">ISSN</string>
+    <string name="magazine_introduce_text_time">创刊时间</string>
+
+    <!--magazine_details-->
+    <string name="magazine_details_page_title">期刊详情</string>
+    <string name="magazine_details_text_introduce">简介</string>
+    <string name="magazine_details_text_periods">期数</string>
+
+    <!--demo_data-->
+    <string name="demo_data_str">新书通报：周易本义、超验主义对儒家思想的接受研究、康德说道德与人性等书已到馆，欢迎同学借阅！！！</string>
+    <string name="require_install_apk">应用未安装，赶快下载安装吧！</string>
 </resources>

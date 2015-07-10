@@ -2,6 +2,7 @@ package com.lza.pad.db.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import java.util.List;
 
 /**
  * 期刊
@@ -9,65 +10,41 @@ import android.os.Parcelable;
  * Created by lansing on 2015/6/4.
  */
 public class MagazineInfo implements Parcelable {
-    // 标题
-    private String title;
-    // 发布时间
-    private String intime;
-    // 期刊id
-    private String id;
-    // 出版社
-    private String press;
-    // issn
-    private String issn;
-    // 主办单位
-    private String company;
 
-    public String getCompany() {
-        return company;
+    // 期刊简介信息
+    private PadJournalContent contents_qk = null;
+
+    // 期刊年限信息
+    private List<PadJournalYear> contents_qk_year = null;
+
+    // 期刊期数信息
+    private List<PadJournalPeriod> contents = null;
+
+    public PadJournalContent getContents_qk() {
+        return contents_qk;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public void setContents_qk(PadJournalContent contents_qk) {
+        this.contents_qk = contents_qk;
     }
 
-    public String getTitle() {
-        return title;
+    public List<PadJournalYear> getContents_qk_year() {
+        return contents_qk_year;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setContents_qk_year(List<PadJournalYear> contents_qk_year) {
+        this.contents_qk_year = contents_qk_year;
     }
 
-    public String getIntime() {
-        return intime;
+    public List<PadJournalPeriod> getContents() {
+        return contents;
     }
 
-    public void setIntime(String intime) {
-        this.intime = intime;
+    public void setContents(List<PadJournalPeriod> contents) {
+        this.contents = contents;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getPress() {
-        return press;
-    }
-
-    public void setPress(String press) {
-        this.press = press;
-    }
-
-    public String getIssn() {
-        return issn;
-    }
-
-    public void setIssn(String issn) {
-        this.issn = issn;
+    public MagazineInfo() {
     }
 
     @Override
@@ -77,27 +54,18 @@ public class MagazineInfo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.title);
-        dest.writeString(this.intime);
-        dest.writeString(this.id);
-        dest.writeString(this.press);
-        dest.writeString(this.issn);
-        dest.writeString(this.company);
-    }
-
-    public MagazineInfo() {
+        dest.writeParcelable(this.contents_qk, 0);
+        dest.writeTypedList(contents_qk_year);
+        dest.writeTypedList(contents);
     }
 
     private MagazineInfo(Parcel in) {
-        this.title = in.readString();
-        this.intime = in.readString();
-        this.id = in.readString();
-        this.press = in.readString();
-        this.issn = in.readString();
-        this.company = in.readString();
+        this.contents_qk = in.readParcelable(PadJournalContent.class.getClassLoader());
+        in.readTypedList(contents_qk_year, PadJournalYear.CREATOR);
+        in.readTypedList(contents, PadJournalPeriod.CREATOR);
     }
 
-    public static final Parcelable.Creator<MagazineInfo> CREATOR = new Parcelable.Creator<MagazineInfo>() {
+    public static final Creator<MagazineInfo> CREATOR = new Creator<MagazineInfo>() {
         public MagazineInfo createFromParcel(Parcel source) {
             return new MagazineInfo(source);
         }

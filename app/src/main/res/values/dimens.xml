@@ -29,4 +29,14 @@
     <dimen name="feed_back_text_enter_control_height">200dp</dimen>
     <integer name="feed_back_text_enter_control_min_lines">3</integer>
     <integer name="feed_back_text_enter_control_max_length">500</integer>
+
+    <!--magazine_introduce_layout-->
+    <dimen name="magazine_introduce_text_width">70dp</dimen>
+
+    <!--item_magazine_periods_layout-->
+    <dimen name="item_text_view_margin">15dp</dimen>
+
+    <!--font_size-->
+    <dimen name="font_size_eighteen">18sp</dimen>
+    <dimen name="font_size_twenty">20sp</dimen>
 </resources>

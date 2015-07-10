@@ -4,11 +4,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.lza.pad.ui.widget.PagerSlidingTabStrip
+        android:id="@+id/main_layout_tab"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
     <android.support.v4.view.ViewPager
         android:id="@+id/main_layout_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.0" />
+
+    <com.lza.pad.ui.widget.MarqueeTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textSize="@dimen/font_size_eighteen"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:ellipsize="marquee"
+        android:text="@string/demo_data_str"/>
 
     <LinearLayout
         android:layout_width="match_parent"

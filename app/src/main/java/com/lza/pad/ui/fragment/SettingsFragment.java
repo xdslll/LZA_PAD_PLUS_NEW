@@ -39,6 +39,7 @@ import lza.com.lza.library.download.DownloadHelper.DownloadInfo;
 import lza.com.lza.library.file.FileManager;
 import lza.com.lza.library.util.ToastUtils;
 import lza.com.lza.library.util.Utility;
+import lza.com.lza.library.wifi.WifiAdmin;
 
 /**
  * Say something about this class
@@ -198,11 +199,7 @@ public class SettingsFragment extends BaseUserFragment implements View.OnClickLi
     }
 
     private void requestVersionInfo() {
-
-        log("downloadNewVersion sdUrl = " + FileManager.getSdCardPath(mActivity));
-
         String url = UrlHelper.getUpdateVersionInfo(pickFirst(mSchoolVersion.getVersion_code()).getCode());
-        log(" url = " + url);
         send(url, new getUpdateVersionInfoHandler());
     }
 
@@ -238,7 +235,11 @@ public class SettingsFragment extends BaseUserFragment implements View.OnClickLi
                     public void onClick(DialogInterface dialog, int which) {
                         // 下载最新版本
                         // ---- need to add ----
-                        downloadNewVersion(newVersionInfo);
+                        if( WifiAdmin.getInstance(mActivity).isWifiConnected() ){
+                            downloadNewVersion(newVersionInfo);
+                        }else{
+                            ToastUtils.showShort(mActivity, R.string.wifi_is_disconnected);
+                        }
                     }
                 });
     }
@@ -252,8 +253,6 @@ public class SettingsFragment extends BaseUserFragment implements View.OnClickLi
         final String saveUrl = FileManager.getApkDirPath(mActivity) + url.split("//")[2];
         log("downloadNewVersion sdUrl = " + FileManager.getSdCardPath(mActivity));
         log("downloadNewVersion saveUrl = " + saveUrl);
-
-        FileManager.createNewFileInSDCard( FileManager.getApkDirPath(mActivity));
 
         // 若有之前下载的版本apk，删除
         File mDesApk = new File(saveUrl);

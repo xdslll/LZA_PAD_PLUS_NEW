@@ -13,6 +13,12 @@
         android:title="@string/menu_select_school"
         android:visible="true" />
     <item
+        android:id="@+id/main_scan"
+        android:icon="@drawable/ic_exit_to_app_grey_16"
+        android:showAsAction="ifRoom"
+        android:title="@string/menu_scan"
+        android:visible="true" />
+    <item
         android:id="@+id/main_login"
         android:icon="@drawable/icn_events_rsvp_invite_more"
         android:showAsAction="ifRoom"

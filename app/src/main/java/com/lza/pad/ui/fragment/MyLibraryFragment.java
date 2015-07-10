@@ -1,14 +1,17 @@
 package com.lza.pad.ui.fragment;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -194,6 +197,16 @@ public class MyLibraryFragment extends BaseUserFragment {
                         mIntent.putExtra("data", mBundle);
                     }else if( mModule.getType().equals("NATIVE")){
 
+                    }else if( mModule.getType().equals("APP")){
+                        Intent intent =  mActivity.getPackageManager().getLaunchIntentForPackage(mModule.getParse_path());
+                        if( null != intent ){
+                            startActivity(intent);
+                        }else{
+                            Uri uri = Uri.parse(mModule.getUrl());
+                            Intent intent1 = new Intent(Intent.ACTION_VIEW, uri);
+                            startActivity(intent1);
+                            //ToastUtils.showShort(mActivity,getString(R.string.require_install_apk));
+                        }
                     }
 
                     if( null != mIntent)

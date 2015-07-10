@@ -1,6 +1,7 @@
 package com.lza.pad.ui.main;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -11,6 +12,9 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
@@ -43,6 +47,9 @@ public class WebViewActivity extends BaseActivity {
     private User mUser = null;
 
     private List<Config> mModuleConfigs = new ArrayList<Config>();
+
+    // actionbar
+    private TextView mTitleTxt = null;
 
     // controls
     private WebView mWebView = null;
@@ -88,8 +95,15 @@ public class WebViewActivity extends BaseActivity {
         if( null == mActionBar )
             return;
 
-        mActionBar.setDisplayShowTitleEnabled(true);
-        mActionBar.setTitle(mModuleInfo.getName());
+        //mActionBar.setDisplayShowTitleEnabled(true);
+        //mActionBar.setTitle(mModuleInfo.getName());
+
+        mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        mActionBar.setDisplayShowCustomEnabled(true);
+        mActionBar.setCustomView(R.layout.action_bar_title_layout);
+
+        mTitleTxt = (TextView) findViewById(R.id.action_bar_title);
+        mTitleTxt.setText(mModuleInfo.getName());
 
         mActionBar.setDisplayHomeAsUpEnabled(true);
     }

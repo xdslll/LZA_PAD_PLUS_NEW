@@ -23,9 +23,9 @@ public class MagazineAdapter extends QuickAdapter<MagazineInfo>{
     @Override
     protected void convert(BaseAdapterHelper baseAdapterHelper, MagazineInfo magazineInfo) {
         if ( null != magazineInfo ){
-            baseAdapterHelper.setText(R.id.magazine_title_txt , magazineInfo.getTitle());
-            baseAdapterHelper.setText(R.id.magazine_host_unit_txt , magazineInfo.getCompany());
-            baseAdapterHelper.setText(R.id.magazine_issn_txt , magazineInfo.getIssn());
+//            baseAdapterHelper.setText(R.id.magazine_title_txt , magazineInfo.getTitle());
+//            baseAdapterHelper.setText(R.id.magazine_host_unit_txt , magazineInfo.getCompany());
+//            baseAdapterHelper.setText(R.id.magazine_issn_txt , magazineInfo.getIssn());
 
             baseAdapterHelper.setOnClickListener(R.id.magazine_delete_img, new View.OnClickListener() {
                 @Override

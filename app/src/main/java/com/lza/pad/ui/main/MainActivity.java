@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,14 +13,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.ForeignCollection;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.joanzapata.android.BaseAdapterHelper;
 import com.joanzapata.android.QuickAdapter;
@@ -31,6 +37,7 @@ import com.lza.pad.db.dao.VersionModuleDao;
 import com.lza.pad.db.model.ConfigGroup;
 import com.lza.pad.db.model.Module;
 import com.lza.pad.db.model.ModuleType;
+import com.lza.pad.db.model.PadResource;
 import com.lza.pad.db.model.ResponseData;
 import com.lza.pad.db.model.School;
 import com.lza.pad.db.model.SchoolVersion;
@@ -46,6 +53,7 @@ import com.lza.pad.ui.base.BaseSlidingActivity;
 import com.lza.pad.ui.fragment.MainMenuFragment;
 import com.lza.pad.ui.fragment.MyLibraryFragment;
 import com.lza.pad.ui.fragment.SettingsFragment;
+import com.lza.pad.ui.widget.PagerSlidingTabStrip;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.lang.ref.WeakReference;
@@ -63,6 +71,11 @@ import lza.com.lza.library.util.Utility;
  * @Date 5/8/15.
  */
 public class MainActivity extends BaseSlidingActivity {
+
+    // actionbar
+    private RelativeLayout mActionBarBackLayout = null;
+    private TextView mTitleTxt = null;
+    private ImageView mBackImg = null;
 
     SlidingMenu mSlidingMenu;
     User mUser;
@@ -86,12 +99,20 @@ public class MainActivity extends BaseSlidingActivity {
 
 
     // add by lfj
+
     // ExpandableListView parent list
     private ArrayList<ModuleType> mModuleTypeParentList = new ArrayList<ModuleType>();
     // ExpandableListView children list
     private HashMap<String, ArrayList<VersionModule>> mModuleTypeChildMap = new HashMap<String, ArrayList<VersionModule>>();
 
     private ExpandableListView mModuleExpandableListView = null;
+
+    private PagerSlidingTabStrip mPagerSlidingTabStrip = null;
+    private List<String> mTabTitleList = new ArrayList<String>();
+    /**
+     * 获取当前屏幕的密度
+     */
+    private DisplayMetrics mDisplayMetrics = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,6 +133,8 @@ public class MainActivity extends BaseSlidingActivity {
 
         setTheme(R.style.Lza_Main_Theme);
         super.onCreate(savedInstanceState);
+
+        mDisplayMetrics = getResources().getDisplayMetrics();
 
         initSlideMenu(R.layout.sliding_menu);
         setContentView(R.layout.main_layout);
@@ -170,6 +193,8 @@ public class MainActivity extends BaseSlidingActivity {
                 requestNewModule();
             }
         });
+
+
         requestNewModule();
     }
 
@@ -179,6 +204,7 @@ public class MainActivity extends BaseSlidingActivity {
         if (mSchoolVersion != null) {
             if (mVersion != null) {
                 String url = UrlHelper.getAllVersionModule(mVersion);
+                log("Module url = " + url);
                 send(url, new VersionModuleHandler());
             } else {
                 showSchoolIllegalDialog();
@@ -259,12 +285,15 @@ public class MainActivity extends BaseSlidingActivity {
 
         // ------------ change by lfj --------------------
         for (ModuleType type : mModuleTypeParentList) {
+            mTabTitleList.add(type.getName());
+
             if (type.getDisplay_mode().equals("GRID")) {
                 mMenuFragments.add(new MainMenuFragment().newInstance(type.getIndex() , mSchoolVersion , mUser));
             } else if (type.getDisplay_mode().equals("LIST")) {
                 mMenuFragments.add(new MyLibraryFragment().newInstance(type.getIndex() , mSchoolVersion , mUser));
             }
         }
+        mTabTitleList.add(getString(R.string.actionbar_tab_settings));
         mMenuFragments.add(new SettingsFragment().newInstance(mSchoolVersion ,mUser));
         // ------------ change by lfj --------------------
 
@@ -343,6 +372,7 @@ public class MainActivity extends BaseSlidingActivity {
             // -------- changed by lfj ----------------
             initActionBar();
             refreshMenu();
+            setTabsValue();
             // -------- changed by lfj ----------------
             mTxtMenuRefresh.setEnabled(true);
         }
@@ -408,9 +438,21 @@ public class MainActivity extends BaseSlidingActivity {
             actionBar.setTitle(R.string.title_main);
         }*/
 
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setDisplayOptions(0, android.app.ActionBar.DISPLAY_SHOW_TITLE | android.app.ActionBar.DISPLAY_SHOW_HOME);
+        //actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        //actionBar.setDisplayOptions(0, android.app.ActionBar.DISPLAY_SHOW_TITLE | android.app.ActionBar.DISPLAY_SHOW_HOME);
 
+
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.action_bar_title_layout);
+
+        mActionBarBackLayout = (RelativeLayout) findViewById(R.id.action_bar_custom_view_layout);
+        mActionBarBackLayout.setBackgroundColor(Color.RED);
+        mTitleTxt = (TextView) findViewById(R.id.action_bar_title);
+        mTitleTxt.setText(Utility.getApplicationName(this));
+
+        mBackImg = (ImageView) findViewById(R.id.action_bar_back_img);
+        mBackImg.setVisibility(View.GONE);
 
 //        actionBar.addTab(actionBar.newTab()
 //                .setText(R.string.actionbar_tab_lib_service)
@@ -420,14 +462,14 @@ public class MainActivity extends BaseSlidingActivity {
 //                .setTabListener(new ActionBarTabListener()));
 
         // -------- change by lfj ----------------
-        actionBar.removeAllTabs();
-
-        for (ModuleType type : mModuleTypeParentList) {
-            actionBar.addTab(actionBar.newTab().setText(type.getName()).setTabListener(new ActionBarTabListener()));
-        }
-        actionBar.addTab(actionBar.newTab()
-                .setText(R.string.actionbar_tab_settings)
-                .setTabListener(new ActionBarTabListener()));
+//        actionBar.removeAllTabs();
+//
+//        for (ModuleType type : mModuleTypeParentList) {
+//            actionBar.addTab(actionBar.newTab().setText(type.getName()).setTabListener(new ActionBarTabListener()));
+//        }
+//        actionBar.addTab(actionBar.newTab()
+//                .setText(R.string.actionbar_tab_settings)
+//                .setTabListener(new ActionBarTabListener()));
         // -------- change by lfj ----------------
     }
 
@@ -448,6 +490,7 @@ public class MainActivity extends BaseSlidingActivity {
     }
 
     public static final int REQUEST_LOGIN = 101;
+    public static final int SCANNIN_GREQUEST_CODE = 102;
 
     private void jumpToLogin() {
         Intent intent = new Intent(mCtx, LoginActivity.class);
@@ -495,6 +538,11 @@ public class MainActivity extends BaseSlidingActivity {
             showQuitDialog();
         } else if (item.getItemId() == R.id.main_add_module) {
             mSlidingMenu.toggle(true);
+        } else if( item.getItemId() == R.id.main_scan){
+            Intent intent = new Intent();
+            intent.setClass(this, MipcaActivityCapture.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
         return super.onMenuItemSelected(featureId, item);
     }
@@ -722,6 +770,11 @@ public class MainActivity extends BaseSlidingActivity {
         }
 
         @Override
+        public CharSequence getPageTitle(int position) {
+            return mTabTitleList.get(position);
+        }
+
+        @Override
         public Fragment getItem(int position) {
             return mMenuFragments.get(position);
         }
@@ -763,5 +816,35 @@ public class MainActivity extends BaseSlidingActivity {
                 }
             }
         }
+    }
+
+    /**
+     * 对PagerSlidingTabStrip的各项属性进行赋值。
+     */
+    private void setTabsValue() {
+        mPagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.main_layout_tab);
+        mPagerSlidingTabStrip.setViewPager(mViewPager);
+
+        // 设置Tab是自动填充满屏幕的
+        mPagerSlidingTabStrip.setShouldExpand(true);
+        // 设置Tab的分割线是透明的
+        mPagerSlidingTabStrip.setDividerColor(Color.GRAY);
+        // 设置Tab底部线的高度
+        mPagerSlidingTabStrip.setUnderlineHeight((int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 1, mDisplayMetrics));
+        // 设置Tab Indicator的高度
+        mPagerSlidingTabStrip.setIndicatorHeight((int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 4, mDisplayMetrics));
+        // 设置Tab标题文字的大小
+        mPagerSlidingTabStrip.setTextSize((int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_SP, 14, mDisplayMetrics));
+        // 设置Tab Indicator的颜色
+        mPagerSlidingTabStrip.setIndicatorColor(Color.parseColor("#ff33b5e5"));
+        // 设置选中Tab文字的颜色 (这是我自定义的一个方法)
+        mPagerSlidingTabStrip.setSelectedTextColor(Color.parseColor("#ff33b5e5"));
+        // 取消点击Tab时的背景色
+        mPagerSlidingTabStrip.setTabBackground(0);
+
+        mPagerSlidingTabStrip.setTextColor(Color.BLACK);
     }
 }

@@ -28,6 +28,7 @@ public class FileManager {
     private static final String LOG = "lza/log";
     private static final String LZA = "lza";
     private static final String APK_CACHE = "lza/apk";
+    private static final String EBOOK_CACHE = "lza/ebook";
 
     public static String getSdCardPath(Context c) {
         if (isExternalStorageMounted()) {
@@ -253,6 +254,18 @@ public class FileManager {
     public static String getApkDirPath(Context c) {
         if (!TextUtils.isEmpty(getSdCardPath(c))) {
             String path = getSdCardPath(c) + File.separator + APK_CACHE + File.separator;
+            File file = new File(path);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            return path;
+        }
+        return "";
+    }
+
+    public static String getEbookDirPath(Context c) {
+        if (!TextUtils.isEmpty(getSdCardPath(c))) {
+            String path = getSdCardPath(c) + File.separator + EBOOK_CACHE + File.separator;
             File file = new File(path);
             if (!file.exists()) {
                 file.mkdirs();

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
@@ -20,6 +21,8 @@ import lza.com.lza.library.util.ToastUtils;
  * Created by lansing on 2015/6/1.
  */
 public class FeedbackActivity extends BaseActivity implements View.OnClickListener{
+    // actionbar
+    private TextView mTitleTxt = null;
 
     // controls
     private EditText mTextEnterEdit = null;
@@ -40,8 +43,14 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
         if( null == mActionBar )
             return;
 
-        mActionBar.setDisplayShowTitleEnabled(true);
-        mActionBar.setTitle(R.string.setting_feedback);
+        //mActionBar.setDisplayShowTitleEnabled(true);
+        //mActionBar.setTitle(R.string.setting_feedback);
+
+        mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        mActionBar.setDisplayShowCustomEnabled(true);
+        mActionBar.setCustomView(R.layout.action_bar_title_layout);
+        mTitleTxt = (TextView) findViewById(R.id.action_bar_title);
+        mTitleTxt.setText(R.string.setting_feedback);
 
         mActionBar.setDisplayHomeAsUpEnabled(true);
     }
@@ -60,9 +69,9 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View view) {
         if( view.getId() == R.id.feed_back_submit_img ){
             if( mTextEnterEdit.length() < 1 ){
-                ToastUtils.showShort(this, R.string.no_version_update);
+                ToastUtils.showShort(this, R.string.content_text_empty);
             }else if( mEmailEnterEdit.length() < 1 ){
-                ToastUtils.showShort(this, R.string.no_version_update);
+                ToastUtils.showShort(this, R.string.email_text_empty);
             }else if( !isEmail(mEmailEnterEdit.getText().toString())){
                 ToastUtils.showShort(this, R.string.error_email_address);
             }else{

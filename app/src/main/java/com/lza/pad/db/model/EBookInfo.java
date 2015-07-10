@@ -3,42 +3,63 @@ package com.lza.pad.db.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 /**
  * 电子书
  *
  * Created by lansing on 2015/6/4.
  */
+@DatabaseTable(tableName = "e_book")
 public class EBookInfo implements Parcelable {
     // 系统编号
+    @DatabaseField(id = true)
     private String id;
     // 图书编号
     private String bookId;
+
     // 书名(目录名称)
+    @DatabaseField
     private String name;
     // ....
     private String namePy;
     // ISBN 国际标准图书编号
     private String isbn;
+
     // 作者
+    @DatabaseField
     private String author;
+
     // 出版社
+    @DatabaseField
     private String press;
+
     // 出版地
     private String address;
+
     // 出版日期
+    @DatabaseField
     private String pubdate;
+
     // 页数
     private String pages;
     // 主题词
     private String subject;
     // 中图法(中国图书分类办法)
     private String ztf;
+
     // 摘要
+    @DatabaseField
     private String summary;
+
     // 学科
     private String xk;
+
     // 封面url地址
+    @DatabaseField
     private String img;
+
     // 阅读进度
     private int readPages;
     //目录中的page

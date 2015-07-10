@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ import java.util.List;
 
 import lza.com.lza.library.db.DatabaseTools;
 import lza.com.lza.library.http.HttpUtility;
+import lza.com.lza.library.util.AppLogger;
 
 /**
  * Created by lansing on 2015/5/25.
@@ -247,6 +249,7 @@ public class MySlidingExpandableAdapter extends BaseExpandableListAdapter {
 
     private void requestConfig(ConfigGroup mConfigGroup) {
         String url = UrlHelper.getConfigs(mConfigGroup);
+        AppLogger.e("sliding Adapter requestConfig url = " + url);
         HttpUtility httpUtility = new HttpUtility(mContext, HttpUtility.ASYNC_HTTP_CLIENT);
         httpUtility.send(url, new getConfigHandler());
     }

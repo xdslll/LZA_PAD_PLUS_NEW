@@ -1,6 +1,7 @@
 package com.lza.pad.db.dao;
 
 /**
+ *
  * Created by lansing on 2015/5/26.
  */
 

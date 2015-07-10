@@ -5,6 +5,7 @@ import android.content.Context;
 import com.lza.pad.db.model.Config;
 
 /**
+ *
  * Created by lansing on 2015/5/27.
  */
 public class ConfigDao extends LzaDao<Config, String> {

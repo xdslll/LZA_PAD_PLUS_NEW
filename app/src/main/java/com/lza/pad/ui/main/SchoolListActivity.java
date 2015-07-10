@@ -196,6 +196,7 @@ public class SchoolListActivity extends BaseActivity {
     private void requestSchoolVersionList() {
         showLoadingView();
         String url = UrlHelper.getSchoolVersion();
+        log("school version url = " + url);
         send(url, new SchoolVersionListHandler());
     }
 

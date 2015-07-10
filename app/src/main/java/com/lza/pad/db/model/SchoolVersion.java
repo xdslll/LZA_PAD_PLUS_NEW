@@ -20,6 +20,16 @@ public class SchoolVersion implements Parcelable {
 
     String url;
 
+    String color;
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
     public List<School> getSchool_bh() {
         return school_bh;
     }
@@ -57,12 +67,14 @@ public class SchoolVersion implements Parcelable {
         dest.writeTypedList(school_bh);
         dest.writeTypedList(version_code);
         dest.writeString(this.url);
+        dest.writeString(this.color);
     }
 
     private SchoolVersion(Parcel in) {
         in.readTypedList(school_bh, School.CREATOR);
         in.readTypedList(version_code, Version.CREATOR);
         this.url = in.readString();
+        this.color = in.readString();
     }
 
     public static final Creator<SchoolVersion> CREATOR = new Creator<SchoolVersion>() {

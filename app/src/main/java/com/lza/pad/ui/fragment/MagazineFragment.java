@@ -120,15 +120,15 @@ public class MagazineFragment extends BaseUserFragment {
     }
 
     private void initData(){
-        mMagazineList.clear();
-        MagazineInfo mMagazineInfo = new MagazineInfo();
-        mMagazineInfo.setTitle("地理研究");
-        mMagazineInfo.setCompany("中国科学院地理科学与资源");
-        mMagazineInfo.setIssn("1000-0585");
-        mMagazineList.add(mMagazineInfo);
-
-        mMagazineAdapter = new MagazineAdapter(mActivity , R.layout.item_magazine_layout , mMagazineList);
-        mZrcListView.setAdapter(mMagazineAdapter);
+//        mMagazineList.clear();
+//        MagazineInfo mMagazineInfo = new MagazineInfo();
+//        mMagazineInfo.setTitle("地理研究");
+//        mMagazineInfo.setCompany("中国科学院地理科学与资源");
+//        mMagazineInfo.setIssn("1000-0585");
+//        mMagazineList.add(mMagazineInfo);
+//
+//        mMagazineAdapter = new MagazineAdapter(mActivity , R.layout.item_magazine_layout , mMagazineList);
+//        mZrcListView.setAdapter(mMagazineAdapter);
     }
 }
 
